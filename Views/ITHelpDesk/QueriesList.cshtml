@@ -1,0 +1,307 @@
+﻿@model List<ITHelpDesk_Updated.Models.Query>
+@{
+    ViewData["Title"] = "Queries List";
+    string currentUser = ViewData["CurrentUser"] as string;
+    var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560" };
+}
+
+<div class="container">
+    <!-- Title with center alignment and orangered color -->
+    <h2 style="color: orangered; text-align: center;">@ViewData["Title"]</h2>
+
+    <!-- Filters Section -->
+    <div class="filters" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+        <div>
+            <label for="filterUsername">Username: </label>
+            <select id="filterUsername" class="filter-dropdown">
+                <option value="">All</option>
+                @foreach (var username in Model.Select(q => q.USR_NAME).Distinct())
+                {
+                    <option value="@username">@username</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="filterName">Name: </label>
+            <select id="filterName" class="filter-dropdown">
+                <option value="">All</option>
+                @foreach (var name in Model.Select(q => q.USR_FULL_NAME).Distinct())
+                {
+                    <option value="@name">@name</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="filterTicketNumber">Ticket Number: </label>
+            <select id="filterTicketNumber" class="filter-dropdown">
+                <option value="">All</option>
+                @foreach (var ticket in Model.Select(q => q.TicketNumber).Distinct())
+                {
+                    <option value="@ticket">@ticket</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="filterTitle">Title: </label>
+            <select id="filterTitle" class="filter-dropdown">
+                <option value="">All</option>
+                @foreach (var title in Model.Select(q => q.Title).Distinct())
+                {
+                    <option value="@title">@title</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="filterPriority">Priority: </label>
+            <select id="filterPriority" class="filter-dropdown">
+                <option value="">All</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+        </div>
+        <div>
+            <label for="filterCategory">Category: </label>
+            <select id="filterCategory" class="filter-dropdown">
+                <option value="">All</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Software">Software</option>
+                <option value="Purchase">Purchase</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+        <div>
+            <label for="filterAssignedTo">Assigned To: </label>
+            <select id="filterAssignedTo" class="filter-dropdown">
+                <option value="">All</option>
+                @foreach (var assigned in Model.Select(q => q.AssignedTo).Distinct())
+                {
+                    <option value="@assigned">@assigned</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="filterStatus">Status: </label>
+            <select id="filterStatus" class="filter-dropdown">
+                <option value="">All</option>
+                <option value="New">New</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+        </div>
+        <div>
+            <button id="generateReportBtn" class="btn btn-success">Generate Report</button>
+        </div>
+    </div>
+
+    <!-- Responsive Table -->
+    <div id="responsive-table">
+        <table class="table table-bordered" id="queriesTable" style="width: 100%; table-layout: auto; border: 2px solid orangered; border-spacing: 0; padding: 0;">
+            <thead style="background-color: orangered; color: white; font-weight: bold; text-align: center;">
+                <tr>
+                    <th data-title="Username" style="padding: 8px;">Username</th>
+                    <th data-title="Name" style="padding: 8px;">Name</th>
+                    <th data-title="Ticket Number" style="padding: 8px;">Ticket Number</th>
+                    <th data-title="Title" style="padding: 8px;">Title</th>
+                    <th data-title="Description" style="padding: 8px;">Description</th>
+                    <th data-title="Priority" style="padding: 8px;">Priority</th>
+                    <th data-title="Category" style="padding: 8px;">Category</th>
+                    <th data-title="Assigned To" style="padding: 8px;">Assigned To</th>
+                    <th data-title="Status" style="padding: 8px;">Status</th>
+                    <th data-title="Created At" style="padding: 8px;">Created At</th>
+                    <th data-title="Resolved At" style="padding: 8px;">Resolved At</th>
+                    <th data-title="Actions" style="padding: 8px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var query in Model)
+                    {
+                        <tr style="text-align: center;">
+                            <td data-title="Username" style="padding: 8px;">@query.USR_NAME</td>
+                            <td data-title="Name" style="padding: 8px;">@query.USR_FULL_NAME</td>
+                            <td data-title="Ticket Number" style="padding: 8px;">@query.TicketNumber</td>
+                            <td data-title="Title" style="padding: 8px;">@query.Title</td>
+                            <td data-title="Description" style="word-wrap: break-word; white-space: normal; max-width: 200px; overflow-wrap: break-word; padding: 8px;">@query.Description</td>
+                            <td data-title="Priority" style="padding: 8px;">@query.Priority</td>
+                            <td data-title="Category" style="padding: 8px;">@query.Category</td>
+                            <td data-title="Assigned To" style="padding: 8px;">@query.AssignedTo</td>
+                            <td data-title="Status" style="padding: 8px;">@query.Status</td>
+                            <td data-title="Created At" style="padding: 8px;">@query.CreatedAt.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                            <td data-title="Resolved At" style="padding: 8px;">@(query.ResolvedAt?.ToString("MMMM dd, yyyy hh:mm tt") ?? "Not Resolved")</td>
+                            <td data-title="Actions" style="padding: 8px;">
+                                <a href="@Url.Action("EditQuery", "Query", new { id = query.QueryId })" class="btn btn-warning btn-sm">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="12" style="text-align: center; color: gray; padding: 8px;">No queries available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- CSS for Responsive Table and Filters -->
+<style>
+    .filters div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .filters label {
+        white-space: nowrap;
+    }
+
+    @@media (max-width: 768px) {
+        #responsive-table table, #responsive-table thead, #responsive-table tbody, #responsive-table th, #responsive-table td, #responsive-table tr
+
+    {
+        display: block;
+    }
+
+    #responsive-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    #responsive-table td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+    }
+
+        #responsive-table td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            content: attr(data-title);
+            font-weight: bold;
+        }
+
+    }
+</style>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Load saved filter values from localStorage
+            function loadFiltersFromStorage() {
+                $("#filterUsername").val(localStorage.getItem('usernameFilter') || "");
+                $("#filterName").val(localStorage.getItem('nameFilter') || "");
+                $("#filterTicketNumber").val(localStorage.getItem('ticketNumberFilter') || "");
+                $("#filterTitle").val(localStorage.getItem('titleFilter') || "");
+                $("#filterPriority").val(localStorage.getItem('priorityFilter') || "");
+                $("#filterCategory").val(localStorage.getItem('categoryFilter') || "");
+                $("#filterAssignedTo").val(localStorage.getItem('assignedToFilter') || "");
+                $("#filterStatus").val(localStorage.getItem('statusFilter') || "");
+            }
+
+            // Save filter values to localStorage
+            function saveFiltersToStorage() {
+                localStorage.setItem('usernameFilter', $("#filterUsername").val());
+                localStorage.setItem('nameFilter', $("#filterName").val());
+                localStorage.setItem('ticketNumberFilter', $("#filterTicketNumber").val());
+                localStorage.setItem('titleFilter', $("#filterTitle").val());
+                localStorage.setItem('priorityFilter', $("#filterPriority").val());
+                localStorage.setItem('categoryFilter', $("#filterCategory").val());
+                localStorage.setItem('assignedToFilter', $("#filterAssignedTo").val());
+                localStorage.setItem('statusFilter', $("#filterStatus").val());
+            }
+
+            // Apply filters
+            function applyFilters() {
+                var usernameFilter = $("#filterUsername").val().toLowerCase();
+                var nameFilter = $("#filterName").val().toLowerCase();
+                var ticketNumberFilter = $("#filterTicketNumber").val().toLowerCase();
+                var titleFilter = $("#filterTitle").val().toLowerCase();
+                var priorityFilter = $("#filterPriority").val().toLowerCase();
+                var categoryFilter = $("#filterCategory").val().toLowerCase();
+                var assignedToFilter = $("#filterAssignedTo").val().toLowerCase();
+                var statusFilter = $("#filterStatus").val().toLowerCase();
+
+                $("#queriesTable tbody tr").each(function () {
+                    var row = $(this);
+                    var username = row.find("td[data-title='Username']").text().toLowerCase();
+                    var name = row.find("td[data-title='Name']").text().toLowerCase();
+                    var ticketNumber = row.find("td[data-title='Ticket Number']").text().toLowerCase();
+                    var title = row.find("td[data-title='Title']").text().toLowerCase();
+                    var priority = row.find("td[data-title='Priority']").text().toLowerCase();
+                    var category = row.find("td[data-title='Category']").text().toLowerCase();
+                    var assignedTo = row.find("td[data-title='Assigned To']").text().toLowerCase();
+                    var status = row.find("td[data-title='Status']").text().toLowerCase();
+
+                    if ((username.indexOf(usernameFilter) !== -1 || usernameFilter === "") &&
+                        (name.indexOf(nameFilter) !== -1 || nameFilter === "") &&
+                        (ticketNumber.indexOf(ticketNumberFilter) !== -1 || ticketNumberFilter === "") &&
+                        (title.indexOf(titleFilter) !== -1 || titleFilter === "") &&
+                        (priority.indexOf(priorityFilter) !== -1 || priorityFilter === "") &&
+                        (category.indexOf(categoryFilter) !== -1 || categoryFilter === "") &&
+                        (assignedTo.indexOf(assignedToFilter) !== -1 || assignedToFilter === "") &&
+                        (status.indexOf(statusFilter) !== -1 || statusFilter === "")) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            }
+
+            // Event listener for filter changes
+            $(".filter-dropdown").on("change", function () {
+                saveFiltersToStorage();
+                applyFilters();
+            });
+
+            // Use fetch to generate the report with filters
+            $("#generateReportBtn").click(function () {
+                var filters = {
+                    username: $("#filterUsername").val(),
+                    name: $("#filterName").val(),
+                    ticketNumber: $("#filterTicketNumber").val(),
+                    title: $("#filterTitle").val(),
+                    priority: $("#filterPriority").val(),
+                    category: $("#filterCategory").val(),
+                    assignedTo: $("#filterAssignedTo").val(),
+                    status: $("#filterStatus").val()
+                };
+
+                fetch('@Url.Action("GenerateReport", "Query")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(filters)
+                })
+                .then(response => response.blob())
+                .then(blob => {
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "QueriesReport.xlsx";
+                    link.click();
+                })
+                .catch(error => {
+                    alert("There was an error generating the report.");
+                });
+            });
+
+            // Reload the page every 10 seconds (10000 milliseconds)
+            setTimeout(function(){
+                location.reload();
+            }, 10000); // 10000ms = 10 seconds
+
+            loadFiltersFromStorage();
+            applyFilters();
+        });
+    </script>
+}

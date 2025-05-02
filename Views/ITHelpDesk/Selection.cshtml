@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ITHelpDesk</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ITHelpDesk.styles.css" asp-append-version="true" />
+    <style>
+        /* Style to center the content in the middle of the page */
+        .full-screen {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top instead of center */
+            height: 100vh;
+            text-align: center;
+            padding-top: 50px; /* Adjust the space from the top */
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center; /* Center the buttons */
+            gap: 12px; /* Adjust the space between buttons */
+            margin-top: 20px; /* Adjust space between the title and buttons */
+        }
+
+        .col-md-2 {
+            padding: 0; /* Remove the padding */
+            margin-bottom: 0; /* Remove space below each button */
+        }
+
+        /* Add space below h2 */
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 60px; /* Add space after the title */
+        }
+
+        /* Add space between the second and third rows */
+        .new-row {
+            margin-top: 25px; /* Add space above the Achievements button */
+        }
+
+        /* Style for the second row */
+        .second-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        /* Prevent the text from wrapping */
+        .btn-nowrap {
+            white-space: nowrap;
+        }
+
+        /* Hide the IT Stock sub-buttons by default */
+        .it-stock-buttons {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* Space between buttons */
+        }
+
+        /* Hide all other buttons by default */
+        .other-buttons {
+            display: flex;
+        }
+
+        /* Adjust col-md-12 to ensure full width for centering */
+        .col-md-12 {
+            width: 100%;
+            max-width: 300px; /* Optional: Limit button width for better appearance */
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="full-screen">
+        <div class="container">
+            <!-- Display Welcome Message -->
+            @if (TempData["WelcomeMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    <strong>@TempData["WelcomeMessage"]</strong>
+                </div>
+            }
+
+            <h2>Please select the category!</h2>
+
+            <div class="row other-buttons">
+                <div class="col-md-2">
+                    <a href="@Url.Action("CreateQuery", "Query")" class="btn btn-primary btn-lg btn-block">Queries</a>
+                </div>
+                @{
+                    string USR_NAME = Context.Session.GetString("USR_NAME");
+                    var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560" };
+                    if (!string.IsNullOrEmpty(USR_NAME) && allowedUsers.Contains(USR_NAME))
+                    {
+                        <div class="row second-row">
+                            <div class="col-md-2">
+                                <a href="@Url.Action("QueriesList", "Query")" class="btn btn-info btn-lg btn-block">Queries List</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="@Url.Action("CreateRiskPoint", "RiskPoints")" class="btn btn-warning btn-lg btn-block">Risk Points</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="@Url.Action("AchievementsOverRiskPoints", "RiskPoints")" class="btn btn-warning btn-lg btn-block btn-nowrap">Achievements / Risk Points</a>
+                            </div>
+                        </div>
+
+                        <div class="row new-row">
+                            <div class="col-md-2">
+                                <a href="@Url.Action("CreateAchievement", "Achievement")" class="btn btn-success btn-lg btn-block">Achievements</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="javascript:void(0);" id="itStockBtn" class="btn btn-success btn-lg btn-block">IT Stock</a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Hidden sub-buttons for IT Stock -->
+            <div class="row it-stock-buttons" id="itStockSubButtons">
+                <div class="col-md-2">
+                    <a href="javascript:void(0);" id="transactionalBtn" class="btn btn-info btn-lg btn-block btn-nowrap">Transactional</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="javascript:void(0);" id="definitionsBtn" class="btn btn-info btn-lg btn-block btn-nowrap">Definitions</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="javascript:void(0);" id="reportsBtn" class="btn btn-info btn-lg btn-block btn-nowrap">Reports</a>
+                </div>
+            </div>
+
+            <!-- Hidden sub-buttons for Definitions -->
+            <div class="row it-stock-buttons" id="definitionsSubButtons">
+                <div class="col-md-10">
+                    <a href="@Url.Action("CreateItem", "Item")" class="btn btn-info btn-lg btn-block btn-nowrap">Items List (Accessories & Main Hardware)</a>
+                </div>
+                <div class="col-md-12 second-row">
+                    <a href="@Url.Action("CreateVendor", "Vendor")" class="btn btn-info btn-lg btn-block btn-nowrap">Vendors List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle visibility of IT Stock sub-buttons and hide other buttons
+        document.getElementById('itStockBtn').addEventListener('click', function() {
+            var subButtons = document.getElementById('itStockSubButtons');
+            var otherButtons = document.querySelector('.other-buttons');
+
+            // Hide all other buttons and show IT Stock sub-buttons
+            otherButtons.style.display = 'none';
+            subButtons.style.display = 'flex';
+        });
+
+        // Show Definitions sub-buttons when Definitions button is clicked
+        document.getElementById('definitionsBtn').addEventListener('click', function() {
+            var definitionsSubButtons = document.getElementById('definitionsSubButtons');
+            var itStockSubButtons = document.getElementById('itStockSubButtons');
+
+            // Hide IT Stock sub-buttons and show Definitions sub-buttons
+            itStockSubButtons.style.display = 'none';
+            definitionsSubButtons.style.display = 'flex';
+        });
+
+        // Hide all buttons when clicking the "Transactional" button (optional)
+        document.getElementById('transactionalBtn').addEventListener('click', function() {
+            var allSubButtons = document.querySelectorAll('.it-stock-buttons');
+            allSubButtons.forEach(function(buttons) {
+                buttons.style.display = 'none'; // Hide all sub-buttons
+            });
+        });
+
+        // You can add similar logic for the Reports button if needed
+        document.getElementById('reportsBtn').addEventListener('click', function() {
+            // Logic for reports button, if needed
+        });
+    </script>
+</body>
+</html>

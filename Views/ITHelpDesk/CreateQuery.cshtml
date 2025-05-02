@@ -1,0 +1,250 @@
+﻿@model ITHelpDesk_Updated.Models.QueryViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="margin-top: 0; text-align: center; color: #00008B; font-weight: bold">@ViewData["Title"]</h2>
+
+            <!-- Query Form -->
+            <form asp-action="CreateQuery" method="post">
+                <div class="row form-row" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                    <!-- Ticket Number -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="TicketNumber" style="font-weight: bold;" data-label="Ticket Number">Ticket Number</label>
+                        <input type="text" class="form-control" readonly value="@ViewData["TicketNumber"]" asp-for="CurrentQuery.TicketNumber" />
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <!-- Title Field -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="Title" style="font-weight: bold;" data-label="Title">Title</label>
+                        <input asp-for="CurrentQuery.Title" class="form-control" />
+                        <span asp-validation-for="CurrentQuery.Title" class="text-danger"></span>
+                    </div>
+
+                    <!-- Description Field -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="Description" style="font-weight: bold;" data-label="Description">Description</label>
+                        <textarea asp-for="CurrentQuery.Description" class="form-control"></textarea>
+                        <span asp-validation-for="CurrentQuery.Description" class="text-danger"></span>
+                    </div>
+
+                    <!-- Priority Field -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="Priority" style="font-weight: bold;" data-label="Priority">Priority</label>
+                        <select asp-for="CurrentQuery.Priority" class="form-control">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        <span asp-validation-for="CurrentQuery.Priority" class="text-danger"></span>
+                    </div>
+
+                    <!-- Category Field -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="Category" style="font-weight: bold;" data-label="Category">Category</label>
+                        <select asp-for="CurrentQuery.Category" class="form-control" id="categorySelect">
+                            <option value="Hardware">Hardware</option>
+                            <option value="ERPSupport">ERP Support</option>
+                            <option value="Software">Software</option>
+                            <option value="Purchase">Purchase</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="CurrentQuery.Category" class="text-danger"></span>
+                    </div>
+
+                    <!-- AssignedTo Field -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="AssignedTo" style="font-weight: bold;" data-label="Assigned To">Assigned To</label>
+                        <select asp-for="CurrentQuery.AssignedTo" class="form-control" id="assignedToSelect">
+                            <option value="">Select Assigned User</option>
+                        </select>
+                        <span asp-validation-for="CurrentQuery.AssignedTo" class="text-danger"></span>
+                    </div>
+
+                    <!-- Status Field -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="Status" style="font-weight: bold;" data-label="Status">Status</label>
+                        <select asp-for="CurrentQuery.Status" class="form-control">
+                            <option value="New">New</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                        <span asp-validation-for="CurrentQuery.Status" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group text-center mt-3">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Submit Query</button>
+                </div>
+            </form>
+
+            <hr />
+
+            <!-- Submitted Queries Table -->
+            <h3 class="text-center" style="margin-top: 20px; font-weight: bold; color: #00008B;">Submitted Queries</h3>
+            <div id="responsive-table" style="margin-top: 20px;">
+                <table class="table table-bordered table-striped" id="queriesTable" style="width: 100%; text-align: center; border: 1px solid #000;">
+                    <thead class="bg-info text-white">
+                        <tr>
+                            <th data-title="Employee Code" style="font-weight: bold; color: #00008B;">Employee Code</th>
+                            <th data-title="Name" style="font-weight: bold; color: #00008B;">Name</th>
+                            <th data-title="Ticket Number" style="font-weight: bold; color: #00008B;">Ticket Number</th>
+                            <th data-title="Title" style="font-weight: bold; color: #00008B;">Title</th>
+                            <th data-title="Description" style="font-weight: bold; color: #00008B;">Description</th>
+                            <th data-title="Priority" style="font-weight: bold; color: #00008B;">Priority</th>
+                            <th data-title="Category" style="font-weight: bold; color: #00008B;">Category</th>
+                            <th data-title="Assigned To" style="font-weight: bold; color: #00008B;">Assigned To</th>
+                            <th data-title="Status" style="font-weight: bold; color: #00008B;">Status</th>
+                            <th data-title="Created At" style="font-weight: bold; color: #00008B;">Created At</th>
+                            <th data-title="Resolved At" style="font-weight: bold; color: #00008B;">Resolved At</th>
+                            <th data-title="Actions" style="font-weight: bold; color: #00008B;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Queries != null && Model.Queries.Any())
+                        {
+                            @foreach (var query in Model.Queries)
+                            {
+                                <tr>
+                                    <td data-title="Employee Code">@Model.UserName</td>
+                                    <td data-title="Name">@query.USR_FULL_NAME</td>
+                                    <td data-title="Ticket Number">@query.TicketNumber</td>
+                                    <td data-title="Title">@query.Title</td>
+                                    <td data-title="Description" style="word-wrap: break-word; white-space: normal; max-width: 200px; overflow-wrap: break-word;">@query.Description</td>
+                                    <td data-title="Priority">@query.Priority</td>
+                                    <td data-title="Category">@query.Category</td>
+                                    <td data-title="Assigned To">@query.AssignedTo</td>
+                                    <td data-title="Status">@query.Status</td>
+                                    <td data-title="Created At">@query.CreatedAt.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                    <td data-title="Resolved At">@(query.ResolvedAt?.ToString("MMMM dd, yyyy hh:mm tt") ?? "")</td>
+                                    <td data-title="Actions" style="display: flex; justify-content: center; gap: 10px;">
+                                        <a href="@Url.Action("EditQuery", "Query", new { id = query.QueryId })" class="btn btn-warning btn-sm edit-btn" style="width: 80px; padding: 8px; transition: all 0.3s ease;">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="12" style="text-align: center; color: gray;">No queries available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for Responsive Form and Table -->
+<style>
+    .form-row .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-row .form-group label {
+            margin-bottom: 5px;
+        }
+
+        .form-row .form-group input,
+        .form-row .form-group select,
+        .form-row .form-group textarea {
+            width: 100%;
+        }
+
+    @@media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+        }
+
+            .form-row .form-group {
+                margin-bottom: 15px;
+            }
+
+                .form-row .form-group label {
+                    font-weight: bold;
+                    display: block;
+                    margin-bottom: 5px;
+                }
+
+                    .form-row .form-group label:before {
+                        content: attr(data-label);
+                    }
+
+        #responsive-table table,
+        #responsive-table thead,
+        #responsive-table tbody,
+        #responsive-table th,
+        #responsive-table td,
+        #responsive-table tr {
+            display: block;
+        }
+
+            #responsive-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        #responsive-table td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left;
+        }
+
+            #responsive-table td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-title);
+                font-weight: bold;
+            }
+    }
+</style>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $('#categorySelect').change(function () {
+            var category = $(this).val();
+            console.log("Selected Category: ", category);
+            if (category) {
+                $.ajax({
+                    url: '@Url.Action("GetAssignedUsersByCategory", "Query")',
+                    type: 'POST',
+                    data: { category: category },
+                    success: function (data) {
+                        var assignedToSelect = $('#assignedToSelect');
+                        assignedToSelect.empty();
+                        assignedToSelect.append('<option value="">Select Assigned User</option>');
+
+                        if (data.length > 0) {
+                            $.each(data, function (index, value) {
+                                assignedToSelect.append('<option value="' + value + '">' + value + '</option>');
+                            });
+                        } else {
+                            assignedToSelect.append('<option value="">No users available</option>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching assigned users:", error);
+                    }
+                });
+            } else {
+                $('#assignedToSelect').empty();
+                $('#assignedToSelect').append('<option value="">Select Assigned User</option>');
+            }
+        });
+        $(document).ready(function () {
+            $('#categorySelect').trigger('change');
+        });
+    </script>
+}

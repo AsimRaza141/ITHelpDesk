@@ -1,0 +1,127 @@
+﻿@model ITHelpDesk_Updated.Models.QueryViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="color: orangered; font-weight: bold; text-align: center;">Edit Query</h2>
+
+            <!-- Edit Query Form -->
+            <form asp-action="EditQuery" method="post" style="display: flex; flex-wrap: wrap; gap: 10px;">
+
+                <input type="hidden" asp-for="CurrentQuery.QueryId" />
+                <input type="hidden" asp-for="CurrentQuery.TicketNumber" />
+                <input type="hidden" asp-for="CurrentQuery.USR_NAME" />
+                <input type="hidden" asp-for="CurrentQuery.CreatedAt" />
+                <input type="hidden" asp-for="CurrentQuery.ResolvedAt" />
+
+                <!-- Title Field -->
+                <div class="form-group col-md-3">
+                    <label for="Title" style="font-weight: 700;">Title</label>
+                    <input asp-for="CurrentQuery.Title" class="form-control" />
+                    <span asp-validation-for="CurrentQuery.Title" class="text-danger"></span>
+                </div>
+
+                <!-- Description Field -->
+                <div class="form-group col-md-3">
+                    <label for="Description" style="font-weight: 700;">Description</label>
+                    <textarea asp-for="CurrentQuery.Description" class="form-control"></textarea>
+                    <span asp-validation-for="CurrentQuery.Description" class="text-danger"></span>
+                </div>
+
+                <!-- Priority Field -->
+                <div class="form-group col-md-2">
+                    <label for="Priority" style="font-weight: 700;">Priority</label>
+                    <select asp-for="CurrentQuery.Priority" class="form-control">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <span asp-validation-for="CurrentQuery.Priority" class="text-danger"></span>
+                </div>
+
+                <!-- Category Field -->
+                <div class="form-group col-md-2">
+                    <label for="Category" style="font-weight: 700;">Category</label>
+                    <select asp-for="CurrentQuery.Category" class="form-control" id="categorySelect">
+                        <option value="Hardware">Hardware</option>
+                        <option value="ERPSupport">ERP Support</option>
+                        <option value="Software">Software</option>
+                        <option value="Purchase">Purchase</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="CurrentQuery.Category" class="text-danger"></span>
+                </div>
+
+                <!-- AssignedTo Field -->
+                <div class="form-group col-md-2">
+                    <label for="AssignedTo" style="font-weight: 700;">Assigned To</label>
+                    <select asp-for="CurrentQuery.AssignedTo" class="form-control" id="assignedToSelect">
+                        <option value="">Select Assigned User</option>
+                    </select>
+                    <span asp-validation-for="CurrentQuery.AssignedTo" class="text-danger"></span>
+                </div>
+
+                <!-- Status Field -->
+                <div class="form-group col-md-2">
+                    <label for="Status" style="font-weight: 700;">Status</label>
+                    <select asp-for="CurrentQuery.Status" class="form-control">
+                        <option value="New">New</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <span asp-validation-for="CurrentQuery.Status" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-md-12 text-center" style="margin-top: 20px;">
+                    <button type="submit" class="btn" style="background-color: orangered; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px;">Update Query</button>
+                    <a href="@Url.Action("CreateQuery", "Query")" class="btn btn-secondary" style="padding: 10px 20px; font-size: 16px; border-radius: 5px;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $('#categorySelect').change(function () {
+            var category = $(this).val();
+            console.log("Selected Category: ", category);
+            if (category) {
+                $.ajax({
+                    url: '@Url.Action("GetAssignedUsersByCategory", "Query")',
+                    type: 'POST',
+                    data: { category: category },
+                    success: function (data) {
+                        var assignedToSelect = $('#assignedToSelect');
+                        assignedToSelect.empty();
+                        assignedToSelect.append('<option value="">Select Assigned User</option>');
+
+                        if (data.length > 0) {
+                            $.each(data, function (index, value) {
+                                assignedToSelect.append('<option value="' + value + '">' + value + '</option>');
+                            });
+                            // Set the previously selected AssignedTo value
+                            var assignedTo = '@Model.CurrentQuery.AssignedTo';
+                            if (assignedTo) {
+                                assignedToSelect.val(assignedTo);
+                            }
+                        } else {
+                            assignedToSelect.append('<option value="">No users available</option>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching assigned users:", error);
+                    }
+                });
+            } else {
+                $('#assignedToSelect').empty();
+                $('#assignedToSelect').append('<option value="">Select Assigned User</option>');
+            }
+        });
+        $(document).ready(function () {
+            $('#categorySelect').trigger('change');
+        });
+    </script>
+}

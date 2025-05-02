@@ -1,0 +1,73 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\ITHelpDesk-Updated\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\views\\ithelpdesk\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\Login.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\Login.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\Login.cshtml",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAwDUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-02T06:29:34.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-02T06:28:29.765Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAqwE4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-02T06:05:41.22Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

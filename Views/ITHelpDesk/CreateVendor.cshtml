@@ -1,0 +1,82 @@
+﻿@model ITHelpDesk_Updated.Models.Vendor
+
+@{
+    ViewData["Title"] = "Create Vendor";
+}
+
+<div class="container">
+    <h2 style="margin-top: 0; text-align: center; color: #00008B; font-weight: bold">@ViewData["Title"]</h2>
+
+    <!-- Vendor Form -->
+    <form asp-action="CreateVendor" method="post">
+        <div class="form-group d-flex" style="margin-bottom: 10px; gap: 10px;">
+            <!-- Vendor Code Field -->
+            <div class="col-md-2">
+                <label for="VendorCode" style="font-weight: bold;">Vendor Code</label>
+                <input type="text" id="VendorCode" class="form-control" value="@ViewData["VendorCode"]" readonly />
+                <!-- Add hidden field for VendorCode to pass it in the POST request -->
+                <input type="hidden" name="VendorCode" value="@ViewData["VendorCode"]" />
+            </div>
+
+            <!-- Vendor Name Field -->
+            <div class="col-md-2">
+                <label for="VendorName" style="font-weight: bold;">Vendor Name</label>
+                <input type="text" id="VendorName" name="VendorName" class="form-control" required />
+            </div>
+    
+            <div class="col-md-2">
+                <label for="VendorNTN" style="font-weight: bold;">Vendor NTN</label>
+                <input type="text" id="VendorNTN" name="VendorNTN" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label for="VendorCNIC" style="font-weight: bold;">Vendor CNIC</label>
+                <input type="text" id="VendorCNIC" name="VendorCNIC" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label for="VendorContactNo" style="font-weight: bold;">Vendor Contact No</label>
+                <input type="text" id="VendorContactNo" name="VendorContactNo" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label for="VendorContactPerson" style="font-weight: bold;">Vendor Contact Person</label>
+                <input type="text" id="VendorContactPerson" name="VendorContactPerson" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Create Vendor</button>
+        </div>
+    </form>
+
+    <hr />
+
+    <!-- Submitted Vendors Table -->
+    <h3 style="color: #00008B; font-weight: bold; text-align: center;">Submitted Vendors</h3>
+
+    <div id="vendor-table" style="margin-top: 20px;">
+        <table class="table table-bordered" style="width: 100%; text-align: center; border: 1px solid #000;">
+            <thead class="bg-info text-white">
+                <tr>
+                    <th style="font-weight: bold; color: #00008B;">Vendor Code</th>
+                    <th style="font-weight: bold; color: #00008B;">Vendor Name</th>
+                    <th style="font-weight: bold; color: #00008B;">Vendor NTN</th>
+                    <th style="font-weight: bold; color: #00008B;">Vendor CNIC</th>
+                    <th style="font-weight: bold; color: #00008B;">Vendor Contact No</th>
+                    <th style="font-weight: bold; color: #00008B;">Vendor Contact Person</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vendor in ViewData["Vendors"] as List<ITHelpDesk_Updated.Models.Vendor>)
+                {
+                    <tr>
+                        <td>@vendor.VendorCode</td>
+                        <td>@vendor.VendorName</td>
+                        <td>@vendor.VendorNTN</td>
+                        <td>@vendor.VendorCNIC</td>
+                        <td>@vendor.VendorContactNo</td>
+                        <td>@vendor.VendorContactPerson</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

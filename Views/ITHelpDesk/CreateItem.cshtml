@@ -1,0 +1,222 @@
+﻿@model ITHelpDesk_Updated.Models.ItemViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="margin-top: 0; text-align: center; color: #00008B; font-weight: bold">Create Item (Accessories & Main Hardware)</h2>
+
+            <!-- Item Form -->
+            <form asp-action="CreateItem" method="post">
+                <div class="row form-row" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                    <!-- Item Section -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="ItemSection" style="font-weight: bold;" data-label="Item Section">Item Section</label>
+                        <select asp-for="CurrentItem.ItemSection" class="form-control" id="itemSectionSelect" onchange="updateItemNameOptions()">
+                            <option value="">--Select Section--</option>
+                            <option value="Main Hardware">Main Hardware</option>
+                            <option value="Accessories">Accessories</option>
+                        </select>
+                        <span asp-validation-for="CurrentItem.ItemSection" class="text-danger"></span>
+                    </div>
+
+                    <!-- Item Name -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="ItemName" style="font-weight: bold;" data-label="Item Name">Item Name</label>
+                        <select asp-for="CurrentItem.ItemName" class="form-control" id="itemNameSelect" onchange="updateCategoryOptions()">
+                            <option value="">--Select Item--</option>
+                        </select>
+                        <span asp-validation-for="CurrentItem.ItemName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Item Category -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="ItemCategory" style="font-weight: bold;" data-label="Item Category">Item Category</label>
+                        <select asp-for="CurrentItem.ItemCategory" class="form-control" id="categorySelect">
+                            <option value="">--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="CurrentItem.ItemCategory" class="text-danger"></span>
+                    </div>
+
+                    <!-- Item Type -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="ItemType" style="font-weight: bold;" data-label="Item Type">Item Type</label>
+                        <select asp-for="CurrentItem.ItemType" class="form-control" id="itemTypeSelect">
+                            <option value="">--Select Item Type--</option>
+                            <option value="New">New</option>
+                            <option value="Old">Old</option>
+                            <option value="Used">Used</option>
+                            <option value="Refurbished">Refurbished</option>
+                            <option value="Branded">Branded</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                        <span asp-validation-for="CurrentItem.ItemType" class="text-danger"></span>
+                    </div>
+
+                    <!-- Item Storage -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="ItemStorage" style="font-weight: bold;" data-label="Item Storage">Item Storage</label>
+                        <select asp-for="CurrentItem.ItemStorage" class="form-control" id="itemStorageSelect">
+                            <option value="">--Select Item Storage--</option>
+                            <option value="8 GB">8 GB</option>
+                            <option value="16 GB">16 GB</option>
+                            <option value="32 GB">32 GB</option>
+                            <option value="64 GB">64 GB</option>
+                            <option value="128 GB">128 GB</option>
+                            <option value="256 GB">256 GB</option>
+                            <option value="512 GB">512 GB</option>
+                            <option value="1 TB">1 TB</option>
+                            <option value="2 TB">2 TB</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                        <span asp-validation-for="CurrentItem.ItemStorage" class="text-danger"></span>
+                    </div>
+
+                    <!-- Item Used For -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label for="ItemUsedFor" style="font-weight: bold;" data-label="Item Used For">Item Used For</label>
+                        <select asp-for="CurrentItem.ItemUsedFor" class="form-control" id="itemUsedForSelect">
+                            <option value="">--Select Item Used For--</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                        <span asp-validation-for="CurrentItem.ItemUsedFor" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group text-center mt-3">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Submit Item</button>
+                </div>
+            </form>
+
+            <hr />
+
+            <!-- Submitted Items Table -->
+            <h3 class="text-center" style="margin-top: 20px; font-weight: bold; color: #00008B;">Submitted Items</h3>
+            <div id="responsive-table" style="margin-top: 20px;">
+                <table class="table table-bordered table-striped" id="itemsTable" style="width: 100%; text-align: center; border: 1px solid #000;">
+                    <thead class="bg-info text-white">
+                        <tr>
+                            <th data-title="Item Code" style="font-weight: bold; color: #00008B;">Item Code</th>
+                            <th data-title="Item Section" style="font-weight: bold; color: #00008B;">Item Section</th>
+                            <th data-title="Item Name" style="font-weight: bold; color: #00008B;">Item Name</th>
+                            <th data-title="Category" style="font-weight: bold; color: #00008B;">Category</th>
+                            <th data-title="Type" style="font-weight: bold; color: #00008B;">Type</th>
+                            <th data-title="Storage" style="font-weight: bold; color: #00008B;">Storage</th>
+                            <th data-title="Used For" style="font-weight: bold; color: #00008B;">Used For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Items != null && Model.Items.Any())
+                        {
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td data-title="Item Code">@item.ItemCode</td>
+                                    <td data-title="Item Section">@item.ItemSection</td>
+                                    <td data-title="Item Name">@item.ItemName</td>
+                                    <td data-title="Category">@item.ItemCategory</td>
+                                    <td data-title="Type">@item.ItemType</td>
+                                    <td data-title="Storage">@item.ItemStorage</td>
+                                    <td data-title="Used For">@item.ItemUsedFor</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: gray;">No items available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<script>
+    function updateItemNameOptions() {
+        var section = document.getElementById('itemSectionSelect').value;
+        var itemNameSelect = document.getElementById('itemNameSelect');
+        itemNameSelect.innerHTML = '<option value="">--Select Item--</option>';
+        if (section === 'Main Hardware') {
+            itemNameSelect.innerHTML += `
+                <option value="LCD">LCD</option>
+                <option value="BareBone">BareBone</option>
+                <option value="CPU">CPU</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Cameras">Cameras</option>
+                <option value="DVR/NVR">DVR/NVR</option>
+                <option value="Printer">Printer</option>
+                <option value="Scanner">Scanner</option>
+                <option value="Toner">Toner</option>
+                <option value="Network Switch">Network Switch</option>
+            `;
+        } else if (section === 'Accessories') {
+            itemNameSelect.innerHTML += `
+                <option value="HDD">HDD</option>
+                <option value="RAM">RAM</option>
+                <option value="Motherboard">Motherboard</option>
+                <option value="LAN Card">LAN Card</option>
+                <option value="Connectors">Connectors</option>
+                <option value="Keyboard">Keyboard</option>
+                <option value="Mouse">Mouse</option>
+                <option value="USB">USB</option>
+            `;
+        }
+        // Reset categorySelect
+        document.getElementById('categorySelect').innerHTML = '<option value="">--Select Category--</option>';
+    }
+
+    function updateCategoryOptions() {
+        var itemName = document.getElementById('itemNameSelect').value;
+        var categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = '<option value="">--Select Category--</option>';
+        switch (itemName) {
+            case 'HDD':
+                categorySelect.innerHTML += `
+                    <option value="SATA">SATA</option>
+                    <option value="SSD">SSD</option>
+                    <option value="SAS">SAS</option>
+                    <option value="SSD Enterprise">SSD Enterprise</option>
+                    <option value="M.2">M.2</option>
+                `;
+                break;
+            case 'RAM':
+                categorySelect.innerHTML += `
+                    <option value="DDR2">DDR2</option>
+                    <option value="DDR3">DDR3</option>
+                    <option value="DDR4">DDR4</option>
+                `;
+                break;
+            case 'Connectors':
+                categorySelect.innerHTML += `
+                    <option value="D2 Type">D2 Type</option>
+                `;
+                break;
+            case 'Keyboard':
+            case 'Mouse':
+            case 'USB':
+                categorySelect.innerHTML += `
+                    <option value="None">None</option>
+                `;
+                break;
+            case 'Cameras':
+                categorySelect.innerHTML += `
+                    <option value="Analog">Analog</option>
+                    <option value="Digital">Digital</option>
+                `;
+                break;
+            default:
+                categorySelect.innerHTML += `
+                    <option value="Not Required">Not Required</option>
+                `;
+        }
+    }
+</script>

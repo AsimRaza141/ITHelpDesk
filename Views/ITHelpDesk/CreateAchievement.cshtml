@@ -1,0 +1,185 @@
+﻿@model ITHelpDesk_Updated.Models.AchievementViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="color: darkgreen; font-weight: bold; text-align: center;">Create Achievements</h2>
+
+            <!-- Achievement Creation Form -->
+            <form asp-action="CreateAchievement" method="post" class="form-row" style="margin-bottom: 20px;">
+                <!-- Fields Row -->
+                <div class="fields-row" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <!-- Achievement Title -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label asp-for="CurrentAchievement.Title" class="control-label" style="color: darkgreen; font-weight: 700; font-size: 18px;" data-label="Achievement Title">Achievement Title</label>
+                        <input asp-for="CurrentAchievement.Title" class="form-control" />
+                        <span asp-validation-for="CurrentAchievement.Title" class="text-danger"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label asp-for="CurrentAchievement.Description" class="control-label" style="color: darkgreen; font-weight: 700; font-size: 18px;" data-label="Description">Description</label>
+                        <textarea asp-for="CurrentAchievement.Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="CurrentAchievement.Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button Row -->
+                <div class="button-row" style="display: flex; justify-content: center; margin-top: 15px;">
+                    <button type="submit" class="btn" style="padding: 12px 24px; font-size: 18px; background-color: orangered; color: white; border: none; border-radius: 5px; transition: background-color 0.3s, transform 0.3s;">Submit Achievement</button>
+                </div>
+            </form>
+
+            <hr />
+
+
+            <!-- Achievement List Table -->
+            <h3 style="color: darkgreen; font-weight: bold; text-align: center;">Achievement List</h3>
+
+            <!-- Generate Report Button -->
+            <div class="form-group text-center mt-3">
+                <button id="generateReportBtn" class="btn btn-success" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Generate Report</button>
+            </div>
+            <br />
+            <div id="responsive-table">
+                <table class="table table-bordered" id="achievementsTable" style="width: 100%; border-collapse: collapse; border: 2px solid darkgreen;">
+                    <thead style="background-color: darkgreen; color: white; font-weight: bold; text-align: center;">
+                        <tr>
+                            <th data-title="Employee Code">Employee Code</th>
+                            <th data-title="Name">Name</th>
+                            <th data-title="Title">Title</th>
+                            <th data-title="Description">Description</th>
+                            <th data-title="Date Achieved">Date Achieved</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Achievements != null && Model.Achievements.Any())
+                        {
+                            @foreach (var achievement in Model.Achievements)
+                            {
+                                <tr>
+                                    <td data-title="Employee Code">@achievement.USR_NAME</td>
+                                    <td data-title="Name">@achievement.USR_FULL_NAME</td>
+                                    <td data-title="Title">@achievement.Title</td>
+                                    <td data-title="Description" style="word-wrap: break-word; white-space: normal; max-width: 200px; overflow-wrap: break-word;">@achievement.Description</td>
+                                    <td data-title="Date Achieved">@(achievement.DateAchieved.HasValue ? achievement.DateAchieved.Value.ToString("MMMM dd, yyyy hh:mm tt") : "N/A")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: gray;">No achievements available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for Responsive Form and Table -->
+<style>
+    .form-row .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-row .form-group label {
+            margin-bottom: 5px;
+        }
+
+        .form-row .form-group input,
+        .form-row .form-group textarea {
+            width: 100%;
+        }
+
+    .form-row .btn:hover {
+        background-color: #e07b00;
+        transform: scale(1.05);
+    }
+
+    @@media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+        }
+
+        .fields-row {
+            flex-direction: column;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-row .form-group label {
+                font-weight: bold;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+                .form-row .form-group label:before {
+                    content: attr(data-label);
+                }
+
+        #responsive-table table,
+        #responsive-table thead,
+        #responsive-table tbody,
+        #responsive-table th,
+        #responsive-table td,
+        #responsive-table tr {
+            display: block;
+        }
+
+            #responsive-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        #responsive-table td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left;
+        }
+
+            #responsive-table td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-title);
+                font-weight: bold;
+            }
+    }
+</style>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $(document).ready(function () {
+            // Generate Report button click handler
+            $("#generateReportBtn").click(function () {
+                fetch('@Url.Action("GenerateAchievementReport", "Achievement")', {
+                    method: 'POST'
+                })
+                .then(response => response.blob())
+                .then(blob => {
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "AchievementsReport.xlsx";
+                    link.click();
+                })
+                .catch(error => {
+                    alert("There was an error generating the report.");
+                });
+            });
+        });
+    </script>
+}

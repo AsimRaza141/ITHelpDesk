@@ -1,0 +1,224 @@
+﻿@model List<ITHelpDesk_Updated.Models.RiskPoint>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="color: #FF8C00; font-weight: bold; text-align: center;">Resolved Risk Points (Achievements)</h2>
+
+            <!-- Filters Section -->
+            <div class="filters" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                <div>
+                    <label for="filterEmployeeCode">Employee Code: </label>
+                    <select id="filterEmployeeCode" class="filter-dropdown">
+                        <option value="">All</option>
+                        @foreach (var employeeCode in Model.Select(r => r.USR_NAME).Distinct())
+                        {
+                            <option value="@employeeCode">@employeeCode</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="filterName">Name: </label>
+                    <select id="filterName" class="filter-dropdown">
+                        <option value="">All</option>
+                        @foreach (var name in Model.Select(r => r.USR_FULL_NAME).Distinct())
+                        {
+                            <option value="@name">@name</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="filterTitle">Title: </label>
+                    <select id="filterTitle" class="filter-dropdown">
+                        <option value="">All</option>
+                        @foreach (var title in Model.Select(r => r.Title).Distinct())
+                        {
+                            <option value="@title">@title</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="filterCategory">Category: </label>
+                    <select id="filterCategory" class="filter-dropdown">
+                        <option value="">All</option>
+                        <option value="Hardware">Hardware</option>
+                        <option value="Software">Software</option>
+                        <option value="Networks">Networks</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filterPriority">Priority: </label>
+                    <select id="filterPriority" class="filter-dropdown">
+                        <option value="">All</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button id="generateReportBtn" class="btn btn-success">Generate Report</button>
+                </div>
+
+            </div>
+
+            <!-- Resolved Risk Points Table -->
+            <div id="responsive-table">
+                <table class="table table-bordered" id="resolvedRiskPointsTable" style="width: 100%; border-collapse: collapse; border: 2px solid #FF8C00;">
+                    <thead style="background-color: #00008B; color: white; font-weight: bold; text-align: center;">
+                        <tr>
+                            <th data-title="Employee Code">Employee Code</th>
+                            <th data-title="Name">Name</th>
+                            <th data-title="Title">Title</th>
+                            <th data-title="Category">Category</th>
+                            <th data-title="Priority">Priority</th>
+                            <th data-title="Status">Status</th>
+                            <th data-title="Created At">Created At</th>
+                            <th data-title="Resolved At">Resolved At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var riskPoint in Model)
+                            {
+                                <tr>
+                                    <td data-title="Employee Code">@riskPoint.USR_NAME</td>
+                                    <td data-title="Name">@riskPoint.USR_FULL_NAME</td>
+                                    <td data-title="Title" style="word-wrap: break-word; white-space: normal; max-width: 200px; overflow-wrap: break-word;">@riskPoint.Title</td>
+                                    <td data-title="Category">@riskPoint.Category</td>
+                                    <td data-title="Priority">@riskPoint.Priority</td>
+                                    <td data-title="Status">@riskPoint.Status</td>
+                                    <td data-title="Created At">@riskPoint.CreatedAt.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                    <td data-title="Resolved At">@(riskPoint.ResolvedAt.HasValue ? riskPoint.ResolvedAt.Value.ToString("MMMM dd, yyyy hh:mm tt") : "N/A")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: gray;">No resolved risk points available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for Responsive Filters and Table -->
+<style>
+    .filters div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .filters label {
+        white-space: nowrap;
+    }
+
+    @@media (max-width: 768px) {
+        #responsive-table table,
+        #responsive-table thead,
+        #responsive-table tbody,
+        #responsive-table th,
+        #responsive-table td,
+        #responsive-table tr {
+            display: block;
+        }
+
+            #responsive-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        #responsive-table td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left;
+        }
+
+            #responsive-table td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-title);
+                font-weight: bold;
+            }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Filter the table when any dropdown selection changes
+        $(document).ready(function () {
+            $(".filter-dropdown").on("change", function () {
+                var employeeCodeFilter = $("#filterEmployeeCode").val().toLowerCase();
+                var nameFilter = $("#filterName").val().toLowerCase();
+                var titleFilter = $("#filterTitle").val().toLowerCase();
+                var categoryFilter = $("#filterCategory").val().toLowerCase();
+                var priorityFilter = $("#filterPriority").val().toLowerCase();
+
+                $("#resolvedRiskPointsTable tbody tr").each(function () {
+                    var row = $(this);
+                    var employeeCode = row.find("td[data-title='Employee Code']").text().toLowerCase();
+                    var name = row.find("td[data-title='Name']").text().toLowerCase();
+                    var title = row.find("td[data-title='Title']").text().toLowerCase();
+                    var category = row.find("td[data-title='Category']").text().toLowerCase();
+                    var priority = row.find("td[data-title='Priority']").text().toLowerCase();
+
+                    // Show or hide the row based on filters
+                    if ((employeeCode.indexOf(employeeCodeFilter) !== -1 || employeeCodeFilter === "") &&
+                        (name.indexOf(nameFilter) !== -1 || nameFilter === "") &&
+                        (title.indexOf(titleFilter) !== -1 || titleFilter === "") &&
+                        (category.indexOf(categoryFilter) !== -1 || categoryFilter === "") &&
+                        (priority.indexOf(priorityFilter) !== -1 || priorityFilter === "")) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            });
+        });
+
+                $(document).ready(function () {
+            $("#generateReportBtn").click(function () {
+                var filters = {
+                    EmployeeCode: $("#filterEmployeeCode").val(),
+                    Name: $("#filterName").val(),
+                    Title: $("#filterTitle").val(),
+                    Category: $("#filterCategory").val(),
+                    Priority: $("#filterPriority").val()
+                };
+
+                fetch('@Url.Action("GenerateReport", "RiskPoints")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(filters)
+                })
+                .then(response => response.blob())  
+                .then(blob => {
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);  
+                    link.download = "ResolvedRiskPointsReport.xlsx";  
+                    link.click();  
+                })
+                .catch(error => {
+                    alert("There was an error generating the report.");
+                });
+            });
+        });
+
+    </script>
+}

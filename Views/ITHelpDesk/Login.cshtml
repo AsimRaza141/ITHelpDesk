@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - IT Help Desk</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="form-container" style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: 1000px; padding: 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+        <h2 class="form-title" style="color: #007bff; font-weight: bold; font-size: 28px; text-align: center; margin-bottom: 30px;">@ViewData["Title"]</h2>
+
+        <form asp-controller="Account" asp-action="Login" method="post">
+            <div class="form-group" style="position: relative; margin-bottom: 30px;">
+                <label for="USR_NAME" style="display: block; margin-bottom: 10px;">Username</label>
+                <i class="fas fa-user" style="position: absolute; left: 15px; top: 50%; transform: translateY(35%); color: blue;"></i>
+                <input type="text" id="USR_NAME" name="USR_NAME" class="form-control" required style="height: 60px; padding-left: 50px; font-size: 18px; border: 2px solid darkgrey; width: 100%;" />
+            </div>
+
+            <div class="form-group" style="position: relative; margin-bottom: 30px;">
+                <label for="USR_PASSWORD" style="display: block; margin-bottom: 10px;">Password</label>
+                <i class="fas fa-lock" style="position: absolute; left: 15px; top: 50%; transform: translateY(35%); color: blue;"></i>
+                <input type="password" id="USR_PASSWORD" name="USR_PASSWORD" class="form-control" required style="height: 60px; padding-left: 50px; font-size: 18px; border: 2px solid darkgrey; width: 100%;" />
+            </div>
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="text-danger">@ViewBag.ErrorMessage</div>
+            }
+
+            <button type="submit" class="btn btn-primary" style="width: 40%; padding: 10px; font-size: 16px; margin: 0 auto; display: block;">Login</button>
+        </form>
+    </div>
+    <script>
+        sessionStorage.clear();
+        localStorage.clear();
+
+        window.history.replaceState(null, null, window.location.href);
+        window.onunload = function () {
+          sessionStorage.clear();
+          localStorage.clear();
+        };
+
+        if (performance.navigation.type === 2) {
+          location.reload(true);
+        }
+    </script>
+</body>
+</html>

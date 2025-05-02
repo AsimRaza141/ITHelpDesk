@@ -1,0 +1,102 @@
+﻿@model ITHelpDesk_Updated.Models.RiskPointViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="color: red; font-weight: bold; text-align: center;">Edit Risk Point</h2>
+
+            <!-- Risk Point Edit Form -->
+            <form asp-action="EditRiskPoint" method="post" style="display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap;">
+                <!-- Hidden field for RiskPointId -->
+                <input asp-for="CurrentRiskPoint.RiskPointId" type="hidden" />
+
+                <!-- Title -->
+                <div class="col-md-2 form-group" style="margin-bottom: 10px;">
+                    <label for="Title" style="font-weight: bold;">Title</label>
+                    <input asp-for="CurrentRiskPoint.Title" class="form-control" />
+                    <span asp-validation-for="CurrentRiskPoint.Title" class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-2 form-group" style="margin-bottom: 10px;">
+                    <label for="Category" style="font-weight: bold;">Category</label>
+                    <select asp-for="CurrentRiskPoint.Category" class="form-control" asp-items="@(new SelectList(new[] { "Hardware", "Software", "Networks", "Others" }, Model.CurrentRiskPoint.Category))">
+                    </select>
+                    <span asp-validation-for="CurrentRiskPoint.Category" class="text-danger"></span>
+                </div>
+
+                <!-- Priority -->
+                <div class="col-md-2 form-group" style="margin-bottom: 10px;">
+                    <label for="Priority" style="font-weight: bold;">Priority</label>
+                    <select asp-for="CurrentRiskPoint.Priority" class="form-control" asp-items="@(new SelectList(new[] { "Low", "Medium", "High" }, Model.CurrentRiskPoint.Priority))">
+                    </select>
+                    <span asp-validation-for="CurrentRiskPoint.Priority" class="text-danger"></span>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-2 form-group" style="margin-bottom: 10px;">
+                    <label for="Status" style="font-weight: bold;">Status</label>
+                    <select asp-for="CurrentRiskPoint.Status" class="form-control" asp-items="@(new SelectList(new[] { "New", "In Progress", "Resolved" }, Model.CurrentRiskPoint.Status))">
+                    </select>
+                    <span asp-validation-for="CurrentRiskPoint.Status" class="text-danger"></span>
+                </div>
+
+                <!-- Resolved At -->
+                <div class="col-md-2 form-group" style="margin-bottom: 10px;">
+                    <label for="ResolvedAt" style="font-weight: bold;">Resolved At</label>
+                    <input asp-for="CurrentRiskPoint.ResolvedAt" type="date" class="form-control" />
+                    <span asp-validation-for="CurrentRiskPoint.ResolvedAt" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group text-center mt-3">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Update Risk Point</button>
+                </div>
+            </form>
+
+            <hr />
+
+            <!-- Risk Points List Table -->
+            <h3 style="color: red; font-weight: bold; text-align: center;">Risk Points List</h3>
+            <div class="table-responsive" style="overflow-x: auto; max-width: 100%; margin-top: 20px;">
+                <table class="table table-bordered table-striped" style="width: 100%; text-align: center; white-space: nowrap; border: 1px solid #000;">
+                    <thead class="bg-info text-white">
+                        <tr>
+                            <th>Employee Code</th>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th>Resolved At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var riskPoint in Model.RiskPoints)
+                        {
+                            <tr>
+                                <td>@Model.UserName</td>
+                                <td>@riskPoint.USR_FULL_NAME</td>
+                                <td>@riskPoint.Title</td>
+                                <td>@riskPoint.Category</td>
+                                <td>@riskPoint.Priority</td>
+                                <td>@riskPoint.Status</td>
+                                <td>@riskPoint.CreatedAt.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                <td>@(riskPoint.ResolvedAt.HasValue ? riskPoint.ResolvedAt.Value.ToString("MMMM dd, yyyy hh:mm tt") : "N/A")</td>
+                                <td>
+                                    <a href="@Url.Action("EditRiskPoint", "RiskPoints", new { id = riskPoint.RiskPointId })" class="btn btn-warning btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
