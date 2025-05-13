@@ -9,93 +9,93 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ITHelpDesk_Updated
 build_property.RootNamespace = ITHelpDesk_Updated
-build_property.ProjectDir = D:\ITHelpDesk-Updated\
+build_property.ProjectDir = D:\ITHelpDesk-Updated\ITHelpDesk-Updated\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\ITHelpDesk-Updated
+build_property.MSBuildProjectDirectory = D:\ITHelpDesk-Updated\ITHelpDesk-Updated
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/ITHelpDesk-Updated/Views/Home/Index.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/Home/Privacy.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/AchievementsOverRiskPoints.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/AchievementsOverRiskPoints.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xBY2hpZXZlbWVudHNPdmVyUmlza1BvaW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateAchievement.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateAchievement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVBY2hpZXZlbWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateItem.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateItem.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVJdGVtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateItemAccessories.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVJdGVtQWNjZXNzb3JpZXMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateItemHardware.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVJdGVtSGFyZHdhcmUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateQuery.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateQuery.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVRdWVyeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateRiskPoint.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateRiskPoint.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVSaXNrUG9pbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/CreateVendor.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateTransaction.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVUcmFuc2FjdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateTransactionIssuance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVUcmFuc2FjdGlvbklzc3VhbmNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateVendor.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVWZW5kb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/EditItem.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xFZGl0SXRlbS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/EditQuery.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/EditQuery.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xFZGl0UXVlcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/EditRiskPoint.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/EditRiskPoint.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xFZGl0Umlza1BvaW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/Login.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/QueriesList.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/QueriesList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xRdWVyaWVzTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/ITHelpDesk/Selection.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/Selection.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xTZWxlY3Rpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/_ViewImports.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/_ViewStart.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ITHelpDesk-Updated/Views/Shared/_Layout.cshtml]
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-54uvpii07t

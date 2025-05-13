@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITHelpDesk-Updated")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+faf8dd4eb98f6a699a3eb2b3d8b8b7caa803ed53")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ed3214273085ec10e6784d61515facf971d58c9")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITHelpDesk-Updated")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITHelpDesk-Updated")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

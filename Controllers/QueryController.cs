@@ -37,7 +37,7 @@ namespace ITHelpDesk_Updated.Controllers
                                 FROM Queries q
                                 LEFT JOIN [HRD].[dbo].[HRD_SEC_USR_USERS] u 
                                 ON q.USR_NAME = u.USR_NAME
-                                WHERE q.USR_NAME = @USR_NAME";
+                                WHERE q.USR_NAME = @USR_NAME ORDER BY q.CreatedAt DESC";
                 SqlCommand cmd = new SqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@USR_NAME", USR_NAME);
 
@@ -115,7 +115,7 @@ namespace ITHelpDesk_Updated.Controllers
             switch (category)
             {
                 case "Hardware":
-                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 4922, 3961)";
+                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 3961)";
                     break;
                 case "ERPSupport":
                     query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4762, 3936, 4654)";
@@ -127,7 +127,7 @@ namespace ITHelpDesk_Updated.Controllers
                     query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357)";
                     break;
                 case "Other":
-                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 4922, 3961, 4762, 3936, 4654, 4999, 1042)";
+                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 3961, 4762, 3936, 4654, 4999, 1042)";
                     break;
                 default:
                     break;

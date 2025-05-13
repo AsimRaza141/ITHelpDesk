@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj": {}
+    "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj": {}
   },
   "projects": {
-    "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj": {
+    "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj",
+        "projectUniqueName": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj",
         "projectName": "ITHelpDesk-Updated",
-        "projectPath": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj",
+        "projectPath": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\ITHelpDesk-Updated.csproj",
         "packagesPath": "C:\\Users\\asim_raza\\.nuget\\packages\\",
-        "outputPath": "D:\\ITHelpDesk-Updated\\obj\\",
+        "outputPath": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

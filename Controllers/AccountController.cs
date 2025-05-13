@@ -13,7 +13,6 @@ namespace ITHelpDesk_Updated.Controllers
         // Login GET Action
         public IActionResult Login()
         {
-            // If user is already logged in, redirect them to Selection page
             if (HttpContext.Session.GetString("USR_NAME") != null)
             {
                 return RedirectToAction("Selection");
@@ -40,16 +39,13 @@ namespace ITHelpDesk_Updated.Controllers
                     reader.Read();
                     string fullName = reader["USR_FULL_NAME"].ToString();
 
-                    // Store the full name and username in the session
                     HttpContext.Session.SetString("USR_NAME", USR_NAME);
                     HttpContext.Session.SetString("USR_FULL_NAME", fullName);
 
                     TempData["WelcomeMessage"] = $"Welcome, {fullName}!";
 
-                    // Pass the logged-in user info to the View
-                    ViewData["USR_NAME"] = USR_NAME; // Pass session value to the view
+                    ViewData["USR_NAME"] = USR_NAME;
 
-                    // Redirect to the Selection page after login
                     return RedirectToAction("Selection");
                 }
                 else
@@ -63,13 +59,11 @@ namespace ITHelpDesk_Updated.Controllers
         // Selection Action
         public IActionResult Selection()
         {
-            // If the user is not logged in, redirect to the login page
             if (HttpContext.Session.GetString("USR_NAME") == null)
             {
                 return RedirectToAction("Login");
             }
 
-            // Pass logged-in user info to the view
             ViewData["USR_NAME"] = HttpContext.Session.GetString("USR_NAME");
 
             return View("~/Views/ITHelpDesk/Selection.cshtml");
