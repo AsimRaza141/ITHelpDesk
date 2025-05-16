@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CO+QyTaqLHTiDuLo7WnT09vbUBblw0Hak5EuzybZ8Dw=",
+  "Hash": "6Usl9mmF69AGLL0NWmiIEfyuMbi9I1DC5/E13uUzYJY=",
   "Source": "ITHelpDesk-Updated",
   "BasePath": "_content/ITHelpDesk-Updated",
   "Mode": "Default",
@@ -1443,6 +1443,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\images\\helpdesk.jpg",
+      "SourceId": "ITHelpDesk-Updated",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\",
+      "BasePath": "_content/ITHelpDesk-Updated",
+      "RelativePath": "images/helpdesk#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ufckq6rqy4",
+      "Integrity": "+t0DjvVNFLwqrqWueZnfiAnLt3NXKj9aGLECDOQF810=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\helpdesk.jpg"
     },
     {
       "Identity": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\images\\navback.jpg",
@@ -3362,6 +3383,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-jcY0RXFOlcp4VNTCcYQtWVZZBlr+ZY+AOv6/0S5dnF8="
+        }
+      ]
+    },
+    {
+      "Route": "images/helpdesk.jpg",
+      "AssetFile": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\images\\helpdesk.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "64942"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+t0DjvVNFLwqrqWueZnfiAnLt3NXKj9aGLECDOQF810=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 13 May 2025 08:15:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+t0DjvVNFLwqrqWueZnfiAnLt3NXKj9aGLECDOQF810="
+        }
+      ]
+    },
+    {
+      "Route": "images/helpdesk.ufckq6rqy4.jpg",
+      "AssetFile": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\images\\helpdesk.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "64942"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+t0DjvVNFLwqrqWueZnfiAnLt3NXKj9aGLECDOQF810=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 13 May 2025 08:15:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ufckq6rqy4"
+        },
+        {
+          "Name": "label",
+          "Value": "images/helpdesk.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+t0DjvVNFLwqrqWueZnfiAnLt3NXKj9aGLECDOQF810="
         }
       ]
     },

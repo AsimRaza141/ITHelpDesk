@@ -48,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVSaXNrUG9pbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateStockReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVTdG9ja1JlcG9ydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ITHelpDesk-Updated/ITHelpDesk-Updated/Views/ITHelpDesk/CreateTransaction.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSVRIZWxwRGVza1xDcmVhdGVUcmFuc2FjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

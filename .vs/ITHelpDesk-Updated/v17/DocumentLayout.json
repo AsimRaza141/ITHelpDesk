@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\controllers\\itemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:controllers\\itemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createtransactionissuance.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createtransactionissuance.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createstockreport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createstockreport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,40 +26,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ItemController.cs",
-              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Controllers\\ItemController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ItemController.cs",
-              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Controllers\\ItemController.cs",
-              "RelativeToolTip": "Controllers\\ItemController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-13T06:44:18.72Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CreateItem.cshtml",
-              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateItem.cshtml",
-              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateItem.cshtml",
-              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateItem.cshtml",
-              "RelativeToolTip": "Views\\ITHelpDesk\\CreateItem.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOoAAAAWAAAAAAAAAA==",
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\Login.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\Login.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-13T06:30:00.043Z",
+              "WhenOpened": "2025-05-16T06:03:15.445Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CreateTransactionIssuance.cshtml",
-              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateTransactionIssuance.cshtml",
-              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateTransactionIssuance.cshtml",
-              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateTransactionIssuance.cshtml",
-              "RelativeToolTip": "Views\\ITHelpDesk\\CreateTransactionIssuance.cshtml",
-              "ViewState": "AgIAAJgBAAAAAAAAAAAAALMBAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "CreateStockReport.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateStockReport.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateStockReport.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateStockReport.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\CreateStockReport.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACcAAABRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T07:52:36.582Z"
+              "WhenOpened": "2025-05-16T05:41:19.705Z",
+              "EditorCaption": ""
             }
           ]
         }

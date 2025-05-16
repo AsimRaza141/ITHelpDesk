@@ -157,7 +157,6 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <!-- Centered Navbar Brand with Orangered Color and Bold Text -->
                 <a class="navbar-brand" href="@Url.Action("Selection", "Account")">IT Help Desk</a>
 
                 <!-- Navbar Toggler for Smaller Screens -->
@@ -191,11 +190,9 @@
 
     <script>
         function checkLoginStatus() {
-            // Use the value from the session to check if user is logged in
-            var userName = '@ViewData["USR_NAME"]'; // Get the session value passed from the controller
+            var userName = '@ViewData["USR_NAME"]'; 
 
             if (!userName) {
-                // If not logged in, redirect to Login page
                 window.location.href = '/Account/Login';
             }
         }

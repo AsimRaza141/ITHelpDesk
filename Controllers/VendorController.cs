@@ -17,10 +17,114 @@ namespace ITHelpDesk_Updated.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            string vendorCode = GetNextVendorCode();
-            ViewData["VendorCode"] = vendorCode;
+            var model = new VendorViewModel
+            {
+                CurrentVendor = new Vendor(),
+                Vendors = GetAllVendors()
+            };
 
-            // Fetch the list of submitted vendors
+            model.CurrentVendor.VendorCode = GetNextVendorCode();
+
+            return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateVendor(VendorViewModel model)
+        {
+            if (HttpContext.Session.GetString("USR_NAME") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ModelState.Remove("Vendors");
+
+            if (ModelState.IsValid)
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string insertQuery = "INSERT INTO Vendors (VendorCode, VendorName, VendorNTN, VendorCNIC, VendorContactNo, VendorContactPerson) " +
+                                        "VALUES (@VendorCode, @VendorName, @VendorNTN, @VendorCNIC, @VendorContactNo, @VendorContactPerson)";
+                    SqlCommand cmd = new SqlCommand(insertQuery, connection);
+
+                    cmd.Parameters.AddWithValue("@VendorCode", model.CurrentVendor.VendorCode);
+                    cmd.Parameters.AddWithValue("@VendorName", model.CurrentVendor.VendorName ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorNTN", model.CurrentVendor.VendorNTN ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorCNIC", model.CurrentVendor.VendorCNIC ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorContactNo", model.CurrentVendor.VendorContactNo ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorContactPerson", model.CurrentVendor.VendorContactPerson ?? "Unknown");
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("CreateVendor");
+            }
+
+            model.Vendors = GetAllVendors();
+            return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
+        }
+
+        [HttpGet]
+        public IActionResult EditVendor(string vendorCode)
+        {
+            if (HttpContext.Session.GetString("USR_NAME") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            Vendor vendor = GetVendorByCode(vendorCode);
+            if (vendor == null)
+            {
+                return NotFound();
+            }
+
+            var model = new VendorViewModel
+            {
+                CurrentVendor = vendor,
+                Vendors = GetAllVendors()
+            };
+
+            return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
+        }
+
+        [HttpPost]
+        public IActionResult EditVendor(VendorViewModel model)
+        {
+            if (HttpContext.Session.GetString("USR_NAME") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ModelState.Remove("Vendors");
+
+            if (ModelState.IsValid)
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string updateQuery = "UPDATE Vendors SET VendorName = @VendorName, VendorNTN = @VendorNTN, VendorCNIC = @VendorCNIC, " +
+                                        "VendorContactNo = @VendorContactNo, VendorContactPerson = @VendorContactPerson WHERE VendorCode = @VendorCode";
+                    SqlCommand cmd = new SqlCommand(updateQuery, connection);
+
+                    cmd.Parameters.AddWithValue("@VendorCode", model.CurrentVendor.VendorCode);
+                    cmd.Parameters.AddWithValue("@VendorName", model.CurrentVendor.VendorName ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorNTN", model.CurrentVendor.VendorNTN ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorCNIC", model.CurrentVendor.VendorCNIC ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorContactNo", model.CurrentVendor.VendorContactNo ?? "Unknown");
+                    cmd.Parameters.AddWithValue("@VendorContactPerson", model.CurrentVendor.VendorContactPerson ?? "Unknown");
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("CreateVendor");
+            }
+
+            model.Vendors = GetAllVendors();
+            return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
+        }
+
+        private List<Vendor> GetAllVendors()
+        {
             List<Vendor> vendors = new List<Vendor>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -42,18 +146,39 @@ namespace ITHelpDesk_Updated.Controllers
                     });
                 }
             }
-
-            // Pass the list of vendors to the view
-            ViewData["Vendors"] = vendors;
-
-            return View("~/Views/ITHelpDesk/CreateVendor.cshtml");
+            return vendors;
         }
 
-        // Helper method to get the next VendorCode
+        private Vendor GetVendorByCode(string vendorCode)
+        {
+            Vendor vendor = null;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT VendorCode, VendorName, VendorNTN, VendorCNIC, VendorContactNo, VendorContactPerson FROM Vendors WHERE VendorCode = @VendorCode";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@VendorCode", vendorCode);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    vendor = new Vendor
+                    {
+                        VendorCode = reader["VendorCode"] as string,
+                        VendorName = reader["VendorName"] as string,
+                        VendorNTN = reader["VendorNTN"] as string,
+                        VendorCNIC = reader["VendorCNIC"] as string,
+                        VendorContactNo = reader["VendorContactNo"] as string,
+                        VendorContactPerson = reader["VendorContactPerson"] as string,
+                    };
+                }
+            }
+            return vendor;
+        }
+
         private string GetNextVendorCode()
         {
-            string newVendorCode = "V0001";  // Default fallback VendorCode
-
+            string newVendorCode = "V0001";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -64,41 +189,14 @@ namespace ITHelpDesk_Updated.Controllers
                 if (reader.Read())
                 {
                     string lastVendorCode = reader["VendorCode"] as string;
-
                     if (!string.IsNullOrEmpty(lastVendorCode))
                     {
-                        int lastVendorNum = int.Parse(lastVendorCode.Substring(1)); // Remove "V" prefix
+                        int lastVendorNum = int.Parse(lastVendorCode.Substring(1));
                         newVendorCode = "V" + (lastVendorNum + 1).ToString("D4");
                     }
                 }
             }
-
             return newVendorCode;
-        }
-
-        [HttpPost]
-        public IActionResult CreateVendor(Vendor vendor)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string insertQuery = "INSERT INTO Vendors (VendorCode, VendorName, VendorNTN, VendorCNIC, VendorContactNo, VendorContactPerson) VALUES (@VendorCode, @VendorName, @VendorNTN, @VendorCNIC, @VendorContactNo, @VendorContactPerson)";
-
-                SqlCommand cmd = new SqlCommand(insertQuery, connection);
-
-                // Add parameters for VendorCode and VendorName and new fields
-                cmd.Parameters.AddWithValue("@VendorCode", vendor.VendorCode);
-                cmd.Parameters.AddWithValue("@VendorName", vendor.VendorName);
-                cmd.Parameters.AddWithValue("@VendorNTN", vendor.VendorNTN);
-                cmd.Parameters.AddWithValue("@VendorCNIC", vendor.VendorCNIC);
-                cmd.Parameters.AddWithValue("@VendorContactNo", vendor.VendorContactNo);
-                cmd.Parameters.AddWithValue("@VendorContactPerson", vendor.VendorContactPerson);
-
-                cmd.ExecuteNonQuery();
-            }
-
-            // Redirect to the same form after submission to refresh the list of vendors
-            return RedirectToAction("CreateVendor");
         }
     }
 }

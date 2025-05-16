@@ -62,6 +62,7 @@ D:\ITHelpDesk-Updated\ITHelpDesk-Updated\wwwroot\lib\jquery-validation\dist\jque
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\helpdesk.jpg
 wwwroot\images\navback.jpg
 wwwroot\images\signup.png
 wwwroot\js\site.js

@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\images\\helpdesk.jpg",
+      "PackagePath": "staticwebassets\\images\\helpdesk.jpg"
+    },
+    {
       "Id": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\wwwroot\\images\\navback.jpg",
       "PackagePath": "staticwebassets\\images\\navback.jpg"
     },
