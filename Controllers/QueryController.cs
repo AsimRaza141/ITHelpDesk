@@ -115,7 +115,7 @@ namespace ITHelpDesk_Updated.Controllers
             switch (category)
             {
                 case "Hardware":
-                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 3961)";
+                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 3961, 5110)";
                     break;
                 case "ERPSupport":
                     query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4762, 3936, 4654)";
@@ -127,7 +127,7 @@ namespace ITHelpDesk_Updated.Controllers
                     query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357)";
                     break;
                 case "Other":
-                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 3961, 4762, 3936, 4654, 4999, 1042)";
+                    query = "SELECT USR_FULL_NAME FROM HRD_SEC_USR_USERS WHERE USR_NAME IN (4357, 1078, 3961, 4762, 3936, 5110, 4654, 4999, 1042)";
                     break;
                 default:
                     break;
@@ -209,7 +209,7 @@ namespace ITHelpDesk_Updated.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560" };
+            var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560", "5110" };
             if (!allowedUsers.Contains(USR_NAME))
             {
                 return Unauthorized();
@@ -358,7 +358,7 @@ namespace ITHelpDesk_Updated.Controllers
             }
 
             // Check if the user has access to QueriesList
-            var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560" };
+            var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560", "5110" };
             bool isAllowedUser = allowedUsers.Contains(USR_NAME);
             return isAllowedUser ? RedirectToAction("QueriesList") : RedirectToAction("CreateQuery");
         }

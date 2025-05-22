@@ -1,463 +1,589 @@
 ﻿@model ITHelpDesk_Updated.Models.TransactionIssuance
-
 @{
     ViewData["Title"] = "Create Transaction Issuance";
 }
 
-<div class="container">
-    <h2 style="text-align: center; font-weight: bold; color: darkgreen;">@ViewData["Title"]</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
 
-    <form asp-action="CreateTransactionIssuance" method="post" id="transactionIssuanceForm">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="row">
-            <div class="col-md-3 form-group">
-                <label for="IssueTo"><b>Issue To</b></label>
-                <select class="form-control" id="IssueTo" name="IssueTo" onchange="handleIssueToChange()" required>
-                    <option value="">--Select--</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Director">Director</option>
-                    <option value="CEO">CEO</option>
-                    <option value="GM HR & Operations">GM HR & Operations</option>
-                    <option value="IT Process">IT Process</option>
-                    <option value="Server Room">Server Room</option>
-                    <option value="Department">Department</option>
-                </select>
-                <span asp-validation-for="IssueTo" class="text-danger"></span>
+        .container {
+            padding: 30px;
+            max-width: 1400px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            font-weight: bold;
+            color: darkgreen;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid #000000; /* Black border for inputs */
+        }
+
+            .form-control:focus {
+                border: 1px solid #000000; /* Black border on focus */
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow on focus */
+            }
+
+        /* Ensure validation error border overrides black border */
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .text-danger {
+            font-size: 0.875em;
+            margin-top: 0.25em;
+        }
+
+        .dropdown-menu {
+            width: 250px !important;
+            max-width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            white-space: normal;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            white-space: normal;
+            word-wrap: break-word;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+            .dropdown-item:hover {
+                background-color: #f5f5f5;
+            }
+
+        /* Table styling */
+        .table {
+            max-width: 1200px; /* Fit within single screen */
+            margin: 30px auto 0;
+            border: 4px double #000000; /* Dark double black border */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            white-space: nowrap; /* Prevent wrapping except Description */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+            /* Specific column widths */
+            th:nth-child(1), td:nth-child(1) {
+                width: 8%;
+            }
+            /* Transaction Code */
+            th:nth-child(2), td:nth-child(2) {
+                width: 7%;
+            }
+            /* Issue To */
+            th:nth-child(3), td:nth-child(3) {
+                width: 12%;
+            }
+            /* Employee Details */
+            th:nth-child(4), td:nth-child(4) {
+                width: 7%;
+            }
+            /* Item Type */
+            th:nth-child(5), td:nth-child(5) {
+                width: 7%;
+            }
+            /* Item Name */
+            th:nth-child(6), td:nth-child(6) {
+                width: 7%;
+            }
+            /* Item Category */
+            th:nth-child(7), td:nth-child(7) {
+                width: 7%;
+            }
+            /* Item Storage */
+            th:nth-child(8), td:nth-child(8) {
+                width: 8%;
+            }
+            /* Date of Issue */
+            th:nth-child(9), td:nth-child(9) {
+                width: 6%;
+            }
+            /* Issued Quantity */
+            th:nth-child(10), td:nth-child(10) {
+                width: 10%;
+            }
+            /* Stock */
+            th:nth-child(11), td:nth-child(11) {
+                width: 25%;
+                white-space: normal; /* Allow wrapping for Description */
+                overflow-wrap: break-word;
+            }
+
+        /* Responsive table for mobile */
+        @@media (max-width: 768px) {
+            .table
+
+        {
+            display: block;
+            overflow-x: auto; /* Horizontal scroll for mobile */
+            font-size: 0.9em; /* Slightly smaller font */
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+
+        <form asp-action="CreateTransactionIssuance" method="post" id="transactionIssuanceForm">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <label for="IssueTo"><b>Issue To</b></label>
+                    <select class="form-control" id="IssueTo" name="IssueTo" onchange="handleIssueToChange()" required>
+                        <option value="">--Select--</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Director">Director</option>
+                        <option value="CEO">CEO</option>
+                        <option value="GM HR & Operations">GM HR & Operations</option>
+                        <option value="IT Process">IT Process</option>
+                        <option value="Server Room">Server Room</option>
+                        <option value="Department">Department</option>
+                    </select>
+                    <span asp-validation-for="IssueTo" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="EmployeeDetails"><b>Employee Details</b></label>
+                    <input type="text" class="form-control" id="EmployeeSearch" name="EmployeeSearch" placeholder="Search by name or ID" oninput="searchEmployees()" autocomplete="off">
+                    <select class="form-control" id="EmployeeDetails" style="display:none;">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <div id="employeeResults" class="dropdown-menu" style="max-height:200px; overflow-y:auto;"></div>
+                    <input type="hidden" id="EmployeeDetailsHidden" name="EmployeeDetails" required />
+                    <span asp-validation-for="EmployeeDetails" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="TransactionCode"><b>Transaction Code</b></label>
+                    <select class="form-control" id="TransactionCode" name="TransactionCode" onchange="fetchTransactionDetails()" required>
+                        <option value="">--Select Transaction--</option>
+                        @foreach (var transaction in ViewData["Transactions"] as List<ITHelpDesk_Updated.Models.Transaction>)
+                        {
+                            <option value="@transaction.TransactionCode">@transaction.TransactionCode - @transaction.ItemName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="TransactionCode" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="EmployeeDetails"><b>Employee Details</b></label>
-                <input type="text" class="form-control" id="EmployeeSearch" name="EmployeeSearch" placeholder="Search by name or ID" oninput="searchEmployees()" autocomplete="off">
-                <select class="form-control" id="EmployeeDetails" style="display:none;">
-                    <!-- Options will be populated dynamically -->
-                </select>
-                <div id="employeeResults" class="dropdown-menu" style="max-height:200px; overflow-y:auto; position: absolute;"></div>
-                <!-- Hidden input to hold EmployeeDetails value -->
-                <input type="hidden" id="EmployeeDetailsHidden" name="EmployeeDetails" required />
-                <span asp-validation-for="EmployeeDetails" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <label for="ItemType"><b>Item Type</b></label>
+                    <input type="text" class="form-control" id="ItemType" name="ItemType" readonly />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="ItemName"><b>Item Name</b></label>
+                    <input type="text" class="form-control" id="ItemName" name="ItemName" readonly />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="ItemCategory"><b>Item Category</b></label>
+                    <input type="text" class="form-control" id="ItemCategory" name="ItemCategory" readonly />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="ItemStorage"><b>Item Storage</b></label>
+                    <input type="text" class="form-control" id="ItemStorage" name="ItemStorage" readonly />
+                </div>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="TransactionCode"><b>Transaction Code</b></label>
-                <select class="form-control" id="TransactionCode" name="TransactionCode" onchange="fetchTransactionDetails()" required>
-                    <option value="">--Select Transaction--</option>
-                    @foreach (var transaction in ViewData["Transactions"] as List<ITHelpDesk_Updated.Models.Transaction>)
-                    {
-                        <option value="@transaction.TransactionCode">@transaction.TransactionCode - @transaction.ItemName</option>
-                    }
-                </select>
-                <span asp-validation-for="TransactionCode" class="text-danger"></span>
-            </div>
-        </div>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <label for="DateOfIssue"><b>Date of Issue</b></label>
+                    <input type="date" class="form-control" id="DateOfIssue" name="DateOfIssue" required />
+                    <span asp-validation-for="DateOfIssue" class="text-danger"></span>
+                </div>
 
-        <div class="row">
-            <div class="col-md-3 form-group">
-                <label for="ItemType"><b>Item Type</b></label>
-                <input type="text" class="form-control" id="ItemType" name="ItemType" readonly />
-            </div>
-            <div class="col-md-3 form-group">
-                <label for="ItemName"><b>Item Name</b></label>
-                <input type="text" class="form-control" id="ItemName" name="ItemName" readonly />
-            </div>
-            <div class="col-md-3 form-group">
-                <label for="ItemCategory"><b>Item Category</b></label>
-                <input type="text" class="form-control" id="ItemCategory" name="ItemCategory" readonly />
-            </div>
-            <div class="col-md-3 form-group">
-                <label for="ItemStorage"><b>Item Storage</b></label>
-                <input type="text" class="form-control" id="ItemStorage" name="ItemStorage" readonly />
-            </div>
-        </div>
+                <div class="col-md-3 form-group">
+                    <label for="IssuedQuantity"><b>Issued Quantity</b></label>
+                    <input type="number" class="form-control" id="IssuedQuantity" name="IssuedQuantity" onchange="updateStock()" required />
+                    <span asp-validation-for="IssuedQuantity" class="text-danger"></span>
+                </div>
 
-        <div class="row">
-            <div class="col-md-3 form-group">
-                <label for="DateOfIssue"><b>Date of Issue</b></label>
-                <input type="date" class="form-control" id="DateOfIssue" name="DateOfIssue" required />
-                <span asp-validation-for="DateOfIssue" class="text-danger"></span>
+                <div class="col-md-3 form-group">
+                    <label for="Stock"><b>Stock (On-hand)</b></label>
+                    <input type="number" class="form-control" id="Stock" name="Stock" readonly />
+                </div>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="IssuedQuantity"><b>Issued Quantity</b></label>
-                <input type="number" class="form-control" id="IssuedQuantity" name="IssuedQuantity" onchange="updateStock()" required />
-                <span asp-validation-for="IssuedQuantity" class="text-danger"></span>
+            <div class="form-group">
+                <label for="Description"><b>Description</b></label>
+                <textarea class="form-control" id="Description" name="Description" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="Stock"><b>Stock (On-hand)</b></label>
-                <input type="number" class="form-control" id="Stock" name="Stock" readonly />
+            <div class="text-center" style="margin-top: 20px;">
+                <button type="submit" class="btn btn-primary" onclick="return validateForm()">Create Transaction Issuance</button>
             </div>
-        </div>
+        </form>
 
-        <div class="form-group">
-            <label for="Description"><b>Description</b></label>
-            <textarea class="form-control" id="Description" name="Description" required></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-
-        <div class="text-center" style="margin-top: 20px;">
-            <button type="submit" class="btn btn-primary" onclick="return validateForm()">Create Transaction Issuance</button>
-        </div>
-    </form>
-
-    <h3 class="mt-5" style="text-align: center; font-weight: bold; color: darkgreen;">Submitted Transactions (Issuance)</h3>
-    <table class="table table-bordered mt-3" style="white-space: nowrap;">
-        <thead>
-            <tr>
-                <th>Transaction Code</th>
-                <th>Issue To</th>
-                <th>Employee Details</th>
-                <th>Item Type</th>
-                <th>Item Name</th>
-                <th>Item Category</th>
-                <th>Item Storage</th>
-                <th>Date of Issue</th>
-                <th>Issued Quantity</th>
-                <th>Stock (On-hand)</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var issuance in ViewData["TransactionIssuance"] as List<TransactionIssuance>)
-            {
+        <h3 class="mt-5">Submitted Transactions (Issuance)</h3>
+        <table class="table table-bordered mt-3">
+            <thead>
                 <tr>
-                    <td>@issuance.TransactionCode</td>
-                    <td>@issuance.IssueTo</td>
-                    <td>@issuance.EmployeeDetails</td>
-                    <td>@issuance.ItemType</td>
-                    <td>@issuance.ItemName</td>
-                    <td>@issuance.ItemCategory</td>
-                    <td>@issuance.ItemStorage</td>
-                    <td>@issuance.DateOfIssue.ToString("yyyy-MM-dd")</td>
-                    <td>@issuance.IssuedQuantity</td>
-                    <td>@issuance.Stock</td>
-                    <td>@issuance.Description</td>
+                    <th>Transaction Code</th>
+                    <th>Issue To</th>
+                    <th>Employee Details</th>
+                    <th>Item Type</th>
+                    <th>Item Name</th>
+                    <th>Item Category</th>
+                    <th>Item Storage</th>
+                    <th>Date of Issue</th>
+                    <th>Issued Quantity</th>
+                    <th>Stock (On-hand)</th>
+                    <th>Description</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @if (ViewData["TransactionIssuance"] is List<TransactionIssuance> issuances && issuances.Any())
+                {
+                    @foreach (var issuance in issuances)
+                    {
+                        <tr>
+                            <td>@issuance.TransactionCode</td>
+                            <td>@issuance.IssueTo</td>
+                            <td>@issuance.EmployeeDetails</td>
+                            <td>@issuance.ItemType</td>
+                            <td>@issuance.ItemName</td>
+                            <td>@issuance.ItemCategory</td>
+                            <td>@issuance.ItemStorage</td>
+                            <td>@issuance.DateOfIssue.ToString("yyyy-MM-dd")</td>
+                            <td>@issuance.IssuedQuantity</td>
+                            <td>@issuance.Stock</td>
+                            <td>@issuance.Description</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="11" class="text-center text-muted">No transactions available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        const getEmployeeDetailsUrl = '@Url.Action("GetEmployeeDetails", "Transaction")';
-        const getTransactionDetailsUrl = '@Url.Action("GetTransactionDetails", "Transaction")';
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- jQuery (Required for Validation) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        function handleIssueToChange() {
-            var issueTo = document.getElementById('IssueTo').value;
-            var employeeSearch = document.getElementById('EmployeeSearch');
-            var employeeDetails = document.getElementById('EmployeeDetails');
-            var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden');
-            var resultsContainer = document.getElementById('employeeResults');
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            const getEmployeeDetailsUrl = '@Url.Action("GetEmployeeDetails", "Transaction")';
+            const getTransactionDetailsUrl = '@Url.Action("GetTransactionDetails", "Transaction")';
 
-            employeeSearch.value = '';
-            employeeDetails.innerHTML = '';
-            employeeDetailsHidden.value = '';
-            resultsContainer.innerHTML = '';
-            resultsContainer.style.display = 'none';
+            function handleIssueToChange() {
+                var issueTo = document.getElementById('IssueTo').value;
+                var employeeSearch = document.getElementById('EmployeeSearch');
+                var employeeDetails = document.getElementById('EmployeeDetails');
+                var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden');
+                var resultsContainer = document.getElementById('employeeResults');
 
-            if (issueTo === "Director") {
-                employeeSearch.placeholder = "Select Director";
-                employeeSearch.readOnly = true;
-                populateStaticEmployees([
-                    { FullName: "Ahsan Akbar Khan" },
-                    { FullName: "Dr. Muhammad Shafiq Khan" }
-                ]);
-            } else if (issueTo === "CEO") {
-                employeeSearch.placeholder = "Select CEO";
-                employeeSearch.readOnly = true;
-                populateStaticEmployees([{ FullName: "Saad Akbar Khan" }]);
-            } else if (issueTo === "GM HR & Operations") {
-                employeeSearch.placeholder = "Select GM HR & Operations";
-                employeeSearch.readOnly = true;
-                populateStaticEmployees([{ FullName: "Waqas Shujait" }]);
-            } else if (issueTo === "IT Process") {
-                employeeSearch.placeholder = "None";
-                employeeSearch.readOnly = true;
-                populateStaticEmployees([{ FullName: "None" }]);
-            } else if (issueTo === "Department") {
-                employeeSearch.placeholder = "Select Department";
-                employeeSearch.readOnly = true;
-                populateStaticEmployees([
-                    { FullName: "Finance" },
-                    { FullName: "Projects" },
-                    { FullName: "Sales & Marketing" },
-                    { FullName: "HR" },
-                    { FullName: "Administration" },
-                    { FullName: "Audit" },
-                    { FullName: "Purchase" },
-                    { FullName: "Recovery" },
-                    { FullName: "Information Technology" },
-                    { FullName: "Quality" },
-                    { FullName: "Seeds" },
-                    { FullName: "Research & Development" },
-                    { FullName: "High Efficiency Irrigation System" },
-                    { FullName: "Efficiency Enhancement" },
-                    { FullName: "Import" },
-                    { FullName: "Training & Development" },
-                    { FullName: "Supply Chain" },
-                    { FullName: "Media & Marketing" },
-                    { FullName: "Distribution" },
-                    { FullName: "Public Relation" },
-                    { FullName: "Designing" },
-                    { FullName: "Eco Prime" }
-                ]);
-            } else {
-                employeeSearch.placeholder = "Search by name or ID";
-                employeeSearch.readOnly = false;
-                resultsContainer.style.display = 'none';
-            }
-        }
-
-        function populateStaticEmployees(employees) {
-            var resultsContainer = document.getElementById('employeeResults');
-            var employeeSearch = document.getElementById('EmployeeSearch');
-            var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden');
-
-            resultsContainer.innerHTML = '';
-
-            employees.forEach(employee => {
-                var item = document.createElement('a');
-                item.className = 'dropdown-item';
-                item.href = '#';
-                item.textContent = employee.FullName;
-                item.onclick = function() {
-                    employeeSearch.value = employee.FullName;
-                    employeeDetailsHidden.value = employee.FullName;
-                    resultsContainer.style.display = 'none';
-                    return false;
-                };
-                resultsContainer.appendChild(item);
-            });
-
-            resultsContainer.style.display = 'block';
-
-            if (employees.length === 1) {
-                employeeSearch.value = employees[0].FullName;
-                employeeDetailsHidden.value = employees[0].FullName;
-                resultsContainer.style.display = 'none';
-            }
-        }
-
-        function searchEmployees() {
-            var searchTerm = document.getElementById('EmployeeSearch').value;
-            var issueTo = document.getElementById('IssueTo').value;
-            var resultsContainer = document.getElementById('employeeResults');
-
-            if (issueTo !== "Staff" && issueTo !== "Server Room") {
-                resultsContainer.style.display = 'none';
-                return;
-            }
-
-            if (searchTerm.length < 2) {
+                employeeSearch.value = '';
+                employeeDetails.innerHTML = '';
+                employeeDetailsHidden.value = '';
                 resultsContainer.innerHTML = '';
                 resultsContainer.style.display = 'none';
-                return;
-            }
 
-            fetch(`${getEmployeeDetailsUrl}?issueTo=${encodeURIComponent(issueTo)}&searchTerm=${encodeURIComponent(searchTerm)}`)
-                .then(response => response.json())
-                .then(data => {
-                    resultsContainer.innerHTML = '';
-
-                    if (data.length > 0) {
-                        data.forEach(employee => {
-                            var displayText = employee.userName ? `${employee.fullName} (${employee.userName})` : employee.fullName;
-                            var item = document.createElement('a');
-                            item.className = 'dropdown-item';
-                            item.href = '#';
-                            item.textContent = displayText;
-                            item.onclick = function() {
-                                document.getElementById('EmployeeSearch').value = displayText;
-                                var employeeDetails = document.getElementById('EmployeeDetails');
-                                var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden');
-                                employeeDetails.innerHTML = '';
-                                var option = document.createElement('option');
-                                option.value = employee.fullName;
-                                option.textContent = employee.fullName;
-                                option.selected = true;
-                                employeeDetails.appendChild(option);
-                                employeeDetailsHidden.value = employee.fullName;
-                                resultsContainer.style.display = 'none';
-                                return false;
-                            };
-                            resultsContainer.appendChild(item);
-                        });
-                        resultsContainer.style.display = 'block';
-                    } else {
-                        resultsContainer.style.display = 'none';
-                    }
-                })
-                .catch(error => console.error('Error fetching employee details:', error));
-        }
-
-        function validateForm() {
-            var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden').value;
-            if (!employeeDetailsHidden || employeeDetailsHidden.trim() === '') {
-                alert('Please select or enter valid Employee Details.');
-                return false;
-            }
-            return true;
-        }
-
-        document.addEventListener('click', function(event) {
-            var resultsContainer = document.getElementById('employeeResults');
-            var employeeSearch = document.getElementById('EmployeeSearch');
-            if (!resultsContainer.contains(event.target) && event.target !== employeeSearch) {
-                resultsContainer.style.display = 'none';
-            }
-        });
-
-        document.getElementById('EmployeeSearch').addEventListener('click', function() {
-            var issueTo = document.getElementById('IssueTo').value;
-            var resultsContainer = document.getElementById('employeeResults');
-            if (issueTo === "Director" || issueTo === "CEO" || issueTo === "GM HR & Operations" || issueTo === "IT Process" || issueTo === "Department") {
-                if (resultsContainer.innerHTML) {
-                    resultsContainer.style.display = 'block';
+                if (issueTo === "Director") {
+                    employeeSearch.placeholder = "Select Director";
+                    employeeSearch.readOnly = true;
+                    populateStaticEmployees([
+                        { FullName: "Ahsan Akbar Khan" },
+                        { FullName: "Dr. Muhammad Shafiq Khan" }
+                    ]);
+                } else if (issueTo === "CEO") {
+                    employeeSearch.placeholder = "Select CEO";
+                    employeeSearch.readOnly = true;
+                    populateStaticEmployees([{ FullName: "Saad Akbar Khan" }]);
+                } else if (issueTo === "GM HR & Operations") {
+                    employeeSearch.placeholder = "Select GM HR & Operations";
+                    employeeSearch.readOnly = true;
+                    populateStaticEmployees([{ FullName: "Waqas Shujait" }]);
+                } else if (issueTo === "IT Process") {
+                    employeeSearch.placeholder = "None";
+                    employeeSearch.readOnly = true;
+                    populateStaticEmployees([{ FullName: "None" }]);
+                } else if (issueTo === "Department") {
+                    employeeSearch.placeholder = "Select Department";
+                    employeeSearch.readOnly = true;
+                    populateStaticEmployees([
+                        { FullName: "Finance" },
+                        { FullName: "Projects" },
+                        { FullName: "Sales & Marketing" },
+                        { FullName: "HR" },
+                        { FullName: "Administration" },
+                        { FullName: "Audit" },
+                        { FullName: "Purchase" },
+                        { FullName: "Recovery" },
+                        { FullName: "Information Technology" },
+                        { FullName: "Quality" },
+                        { FullName: "Seeds" },
+                        { FullName: "Research & Development" },
+                        { FullName: "High Efficiency Irrigation System" },
+                        { FullName: "Efficiency Enhancement" },
+                        { FullName: "Import" },
+                        { FullName: "Training & Development" },
+                        { FullName: "Supply Chain" },
+                        { FullName: "Media & Marketing" },
+                        { FullName: "Distribution" },
+                        { FullName: "Public Relation" },
+                        { FullName: "Designing" },
+                        { FullName: "Eco Prime" }
+                    ]);
+                } else {
+                    employeeSearch.placeholder = "Search by name or ID";
+                    employeeSearch.readOnly = false;
+                    resultsContainer.style.display = 'none';
                 }
             }
-        });
 
-        function fetchTransactionDetails() {
-            var transactionCode = document.getElementById('TransactionCode').value;
+            function populateStaticEmployees(employees) {
+                var resultsContainer = document.getElementById('employeeResults');
+                var employeeSearch = document.getElementById('EmployeeSearch');
+                var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden');
 
-            if (transactionCode) {
-                fetch(`${getTransactionDetailsUrl}?transactionCode=${encodeURIComponent(transactionCode)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok: ' + response.statusText);
-                        }
-                        return response.json();
-                    })
+                resultsContainer.innerHTML = '';
+
+                employees.forEach(employee => {
+                    var item = document.createElement('a');
+                    item.className = 'dropdown-item';
+                    item.href = '#';
+                    item.textContent = employee.FullName;
+                    item.onclick = function() {
+                        employeeSearch.value = employee.FullName;
+                        employeeDetailsHidden.value = employee.FullName;
+                        resultsContainer.style.display = 'none';
+                        return false;
+                    };
+                    resultsContainer.appendChild(item);
+                });
+
+                resultsContainer.style.display = 'block';
+
+                if (employees.length === 1) {
+                    employeeSearch.value = employees[0].FullName;
+                    employeeDetailsHidden.value = employees[0].FullName;
+                    resultsContainer.style.display = 'none';
+                }
+            }
+
+            function searchEmployees() {
+                var searchTerm = document.getElementById('EmployeeSearch').value;
+                var issueTo = document.getElementById('IssueTo').value;
+                var resultsContainer = document.getElementById('employeeResults');
+
+                if (issueTo !== "Staff" && issueTo !== "Server Room") {
+                    resultsContainer.style.display = 'none';
+                    return;
+                }
+
+                if (searchTerm.length < 2) {
+                    resultsContainer.innerHTML = '';
+                    resultsContainer.style.display = 'none';
+                    return;
+                }
+
+                fetch(`${getEmployeeDetailsUrl}?issueTo=${encodeURIComponent(issueTo)}&searchTerm=${encodeURIComponent(searchTerm)}`)
+                    .then(response => response.json())
                     .then(data => {
-                        if (data) {
-                            document.getElementById('ItemType').value = data.itemType || '';
-                            document.getElementById('ItemName').value = data.itemName || '';
-                            document.getElementById('ItemCategory').value = data.itemCategory || '';
-                            document.getElementById('ItemStorage').value = data.itemStorage || '';
-                            document.getElementById('Stock').value = data.stock || '';
-                            document.getElementById('Stock').setAttribute('data-initial-stock', data.stock || '');
-                            document.getElementById('IssuedQuantity').value = '';
+                        resultsContainer.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(employee => {
+                                var displayText = employee.userName ? `${employee.fullName} (${employee.userName})` : employee.fullName;
+                                var item = document.createElement('a');
+                                item.className = 'dropdown-item';
+                                item.href = '#';
+                                item.textContent = displayText;
+                                item.onclick = function() {
+                                    document.getElementById('EmployeeSearch').value = displayText;
+                                    var employeeDetails = document.getElementById('EmployeeDetails');
+                                    var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden');
+                                    employeeDetails.innerHTML = '';
+                                    var option = document.createElement('option');
+                                    option.value = employee.fullName;
+                                    option.textContent = employee.fullName;
+                                    option.selected = true;
+                                    employeeDetails.appendChild(option);
+                                    employeeDetailsHidden.value = employee.fullName;
+                                    resultsContainer.style.display = 'none';
+                                    return false;
+                                };
+                                resultsContainer.appendChild(item);
+                            });
+                            resultsContainer.style.display = 'block';
                         } else {
-                            alert('No data found for the selected TransactionCode');
+                            resultsContainer.style.display = 'none';
                         }
                     })
-                    .catch(error => {
-                        console.error('Error fetching transaction details:', error);
-                        alert('Error fetching transaction details: ' + error.message);
-                        document.getElementById('ItemType').value = '';
-                        document.getElementById('ItemName').value = '';
-                        document.getElementById('ItemCategory').value = '';
-                        document.getElementById('ItemStorage').value = '';
-                        document.getElementById('Stock').value = '';
-                        document.getElementById('Stock').setAttribute('data-initial-stock', '');
-                        document.getElementById('IssuedQuantity').value = '';
-                    });
-            } else {
-                document.getElementById('ItemType').value = '';
-                document.getElementById('ItemName').value = '';
-                document.getElementById('ItemCategory').value = '';
-                document.getElementById('ItemStorage').value = '';
-                document.getElementById('Stock').value = '';
-                document.getElementById('Stock').setAttribute('data-initial-stock', '');
-                document.getElementById('IssuedQuantity').value = '';
-            }
-        }
-
-        function updateStock() {
-            var initialStock = parseFloat(document.getElementById('Stock').getAttribute('data-initial-stock')) || 0;
-            var issuedQuantity = parseFloat(document.getElementById('IssuedQuantity').value) || 0;
-
-            if (issuedQuantity > initialStock) {
-                alert('Issued quantity cannot exceed available stock!');
-                document.getElementById('IssuedQuantity').value = '';
-                document.getElementById('Stock').value = initialStock;
-                return;
+                    .catch(error => console.error('Error fetching employee details:', error));
             }
 
-            document.getElementById('Stock').value = initialStock - issuedQuantity;
-        }
+            function validateForm() {
+                var employeeDetailsHidden = document.getElementById('EmployeeDetailsHidden').value;
+                if (!employeeDetailsHidden || employeeDetailsHidden.trim() === '') {
+                    alert('Please select or enter valid Employee Details.');
+                    return false;
+                }
+                return true;
+            }
 
-        $(document).ready(function () {
-            $("#transactionIssuanceForm").validate({
-                errorElement: 'span',
-                errorClass: 'text-danger',
-                highlight: function (element) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element) {
-                    $(element).removeClass('is-invalid');
-                },
-                rules: {
-                    EmployeeDetails: {
-                        required: true,
-                        normalizer: function(value) {
-                            return value.trim(); 
-                        }
-                    },
-                    IssueTo: "required",
-                    TransactionCode: "required",
-                    DateOfIssue: "required",
-                    IssuedQuantity: "required",
-                    Description: "required"
-                },
-                messages: {
-                    EmployeeDetails: "This field is required.",
-                    IssueTo: "This field is required.",
-                    TransactionCode: "This field is required.",
-                    DateOfIssue: "This field is required.",
-                    IssuedQuantity: "This field is required.",
-                    Description: "This field is required."
+            document.addEventListener('click', function(event) {
+                var resultsContainer = document.getElementById('employeeResults');
+                var employeeSearch = document.getElementById('EmployeeSearch');
+                if (!resultsContainer.contains(event.target) && event.target !== employeeSearch) {
+                    resultsContainer.style.display = 'none';
                 }
             });
-        });
-    </script>
-}
 
-<style>
-    .text-danger {
-        font-size: 0.875em;
-        margin-top: 0.25em;
-    }
+            document.getElementById('EmployeeSearch').addEventListener('click', function() {
+                var issueTo = document.getElementById('IssueTo').value;
+                var resultsContainer = document.getElementById('employeeResults');
+                if (issueTo === "Director" || issueTo === "CEO" || issueTo === "GM HR & Operations" || issueTo === "IT Process" || issueTo === "Department") {
+                    if (resultsContainer.innerHTML) {
+                        resultsContainer.style.display = 'block';
+                    }
+                }
+            });
 
-    .is-invalid {
-        border-color: #dc3545;
-    }
+            function fetchTransactionDetails() {
+                var transactionCode = document.getElementById('TransactionCode').value;
 
-    .form-group {
-        margin-bottom: 15px;
-        position: relative;
-    }
+                if (transactionCode) {
+                    fetch(`${getTransactionDetailsUrl}?transactionCode=${encodeURIComponent(transactionCode)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data) {
+                                document.getElementById('ItemType').value = data.itemType || '';
+                                document.getElementById('ItemName').value = data.itemName || '';
+                                document.getElementById('ItemCategory').value = data.itemCategory || '';
+                                document.getElementById('ItemStorage').value = data.itemStorage || '';
+                                document.getElementById('Stock').value = data.stock || '';
+                                document.getElementById('Stock').setAttribute('data-initial-stock', data.stock || '');
+                                document.getElementById('IssuedQuantity').value = '';
+                            } else {
+                                alert('No data found for the selected TransactionCode');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching transaction details:', error);
+                            alert('Error fetching transaction details: ' + error.message);
+                            document.getElementById('ItemType').value = '';
+                            document.getElementById('ItemName').value = '';
+                            document.getElementById('ItemCategory').value = '';
+                            document.getElementById('ItemStorage').value = '';
+                            document.getElementById('Stock').value = '';
+                            document.getElementById('Stock').setAttribute('data-initial-stock', '');
+                            document.getElementById('IssuedQuantity').value = '';
+                        });
+                } else {
+                    document.getElementById('ItemType').value = '';
+                    document.getElementById('ItemName').value = '';
+                    document.getElementById('ItemCategory').value = '';
+                    document.getElementById('ItemStorage').value = '';
+                    document.getElementById('Stock').value = '';
+                    document.getElementById('Stock').setAttribute('data-initial-stock', '');
+                    document.getElementById('IssuedQuantity').value = '';
+                }
+            }
 
-    .form-control {
-        width: 100%;
-    }
+            function updateStock() {
+                var initialStock = parseFloat(document.getElementById('Stock').getAttribute('data-initial-stock')) || 0;
+                var issuedQuantity = parseFloat(document.getElementById('IssuedQuantity').value) || 0;
 
-    .dropdown-menu {
-        width: 250px !important;
-        max-width: 100%;
-        max-height: 200px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        white-space: normal;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 1000;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+                if (issuedQuantity > initialStock) {
+                    alert('Issued quantity cannot exceed available stock!');
+                    document.getElementById('IssuedQuantity').value = '';
+                    document.getElementById('Stock').value = initialStock;
+                    return;
+                }
 
-    .dropdown-item {
-        white-space: normal;
-        word-wrap: break-word;
-        padding: 8px 12px;
-        cursor: pointer;
-    }
+                document.getElementById('Stock').value = initialStock - issuedQuantity;
+            }
 
-    .dropdown-item:hover {
-        background-color: #f5f5f5;
+            $(document).ready(function () {
+                $("#transactionIssuanceForm").validate({
+                    errorElement: 'span',
+                    errorClass: 'text-danger',
+                    highlight: function (element) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    rules: {
+                        EmployeeDetails: {
+                            required: true,
+                            normalizer: function(value) {
+                                return value.trim();
+                            }
+                        },
+                        IssueTo: "required",
+                        TransactionCode: "required",
+                        DateOfIssue: "required",
+                        IssuedQuantity: "required",
+                        Description: "required"
+                    },
+                    messages: {
+                        EmployeeDetails: "This field is required.",
+                        IssueTo: "This field is required.",
+                        TransactionCode: "This field is required.",
+                        DateOfIssue: "This field is required.",
+                        IssuedQuantity: "This field is required.",
+                        Description: "This field is required."
+                    }
+                });
+            });
+        </script>
     }
-</style>
+</body>
+</html>

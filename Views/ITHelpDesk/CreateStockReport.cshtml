@@ -4,43 +4,193 @@
     ViewData["Title"] = "Stock Ledger";
 }
 
-<div class="container">
-    <h2 style="margin-top: 0; text-align: center; color: #00008B; font-weight: bold">@ViewData["Title"]</h2>
-
-    <!-- Stock Report Form -->
-    <form asp-action="CreateStockReport" method="post" id="stockReportForm">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label for="SelectedTransactionCriteria" style="font-weight: bold;">Transaction Criteria</label>
-            <select asp-for="SelectedTransactionCriteria" class="form-control" id="transactionCriteriaSelect" asp-items="@Model.TransactionCriteriaList" onchange="this.form.submit()">
-                <option value="">--Select Transaction Criteria--</option>
-            </select>
-            <span asp-validation-for="SelectedTransactionCriteria" class="text-danger"></span>
-        </div>
-    </form>
-
-    <!-- Generate Report Button -->
-    @if (Model.StockRecords != null && Model.StockRecords.Any())
-    {
-        <form asp-action="GenerateReport" method="post" class="text-center mt-3">
-            <input type="hidden" name="SelectedTransactionCriteria" value="@Model.SelectedTransactionCriteria" />
-            <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Generate Report</button>
-        </form>
+<style>
+    #stockTable th, #stockTable td {
+        padding: 8px;
+        white-space: nowrap; /* Strictly enforce no wrapping */
+        overflow: hidden;
+        text-overflow: ellipsis; /* Truncate with ellipsis if content exceeds width */
     }
+
+        #stockTable th:nth-child(1), #stockTable td:nth-child(1) {
+            width: 5%;
+        }
+        /* Transaction Code */
+        #stockTable th:nth-child(2), #stockTable td:nth-child(2) {
+            width: 8%;
+        }
+        /* Item Name */
+        #stockTable th:nth-child(3), #stockTable td:nth-child(3) {
+            width: 8%;
+        }
+        /* Item Category */
+        #stockTable th:nth-child(4), #stockTable td:nth-child(4) {
+            width: 15%;
+            white-space: normal; /* Add wrap for Description */
+        }
+        /* Description */
+        #stockTable th:nth-child(5), #stockTable td:nth-child(5) {
+            width: 7%;
+        }
+        /* Issue To */
+        #stockTable th:nth-child(6), #stockTable td:nth-child(6) {
+            width: 15%;
+        }
+        /* Employee Details */
+        #stockTable th:nth-child(7), #stockTable td:nth-child(7) {
+            width: 7%;
+        }
+        /* Date of Issue */
+        #stockTable th:nth-child(8), #stockTable td:nth-child(8) {
+            width: 4.5%;
+        }
+        /* Stock-In */
+        #stockTable th:nth-child(9), #stockTable td:nth-child(9) {
+            width: 4.5%;
+        }
+        /* Stock-Out */
+        #stockTable th:nth-child(10), #stockTable td:nth-child(10) {
+            width: 4.5%;
+        }
+    /* Balance */
+    .dataTables_wrapper {
+        width: 100% !important;
+    }
+
+    #responsive-table {
+        margin-left: -50px; /* Shift table to the left */
+        padding-left: 0;
+        float: left; /* Override centering */
+    }
+
+    .table-container {
+        overflow-x: hidden; /* Prevent any horizontal overflow */
+    }
+
+    #stockTable th {
+        position: relative;
+        overflow: visible; /* Allow resize handle to be visible */
+    }
+
+    .resize-handle {
+        position: absolute;
+        right: -5px;
+        top: 0;
+        bottom: 0;
+        width: 10px;
+        cursor: col-resize;
+        z-index: 10;
+    }
+
+        .resize-handle:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+</style>
+
+<div class="container-fluid px-0">
+    <h2 style="margin-top: 0; text-align: center; color: #00008B; font-weight: bold; position: sticky; top: 0; background: white; z-index: 1000;" id="stockLedgerHeading">@ViewData["Title"]</h2>
+
+    <div class="fixed-section">
+        <!-- Stock Report Form -->
+        <form asp-action="CreateStockReport" method="post" id="stockReportForm" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#stockTableContainer">
+            <div asp-validation-summary="None" class="text-danger"></div>
+            <div class="form-group d-flex align-items-end gap-2 flex-wrap" style="margin-bottom: 15px;">
+                <!-- Transaction Criteria -->
+                <div style="flex: 1; min-width: 150px; max-width: 250px;">
+                    <label for="SelectedTransactionCriteria" style="font-weight: bold;">Transaction Criteria</label>
+                    <select asp-for="SelectedTransactionCriteria" class="form-control form-control-sm" id="transactionCriteriaSelect" asp-items="@Model.TransactionCriteriaList" onchange="submitForm()">
+                        <option value="">--Select Criteria--</option>
+                    </select>
+                    <span asp-validation-for="SelectedTransactionCriteria" class="text-danger"></span>
+                </div>
+                <!-- Employee Details -->
+                <div style="flex: 1; min-width: 150px; max-width: 250px;">
+                    <label for="SelectedEmployeeDetails" style="font-weight: bold;">Employee Details</label>
+                    <select asp-for="SelectedEmployeeDetails" class="form-control form-control-sm" id="employeeDetailsSelect" asp-items="@Model.EmployeeDetailsList" onchange="submitForm()">
+                        <option value="">--Select Employee--</option>
+                    </select>
+                    <span asp-validation-for="SelectedEmployeeDetails" class="text-danger"></span>
+                </div>
+                <!-- Date Range -->
+                <div class="d-flex align-items-center gap-2" style="flex: 1; min-width: 250px;">
+                    <div style="flex: 1; max-width: 120px;">
+                        <label for="StartDate" style="font-weight: bold;">Start Date</label>
+                        <input asp-for="StartDate" type="date" class="form-control form-control-sm" id="startDate" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div style="flex: 1; max-width: 120px;">
+                        <label for="EndDate" style="font-weight: bold;">End Date</label>
+                        <input asp-for="EndDate" type="date" class="form-control form-control-sm" id="endDate" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                    <div style="transform: translateY(12px);">
+                        <button type="submit" class="btn btn-primary" style="background-color: orangered; padding: 6px 12px;">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Generate Report Button -->
+        @if (Model.StockRecords != null && Model.StockRecords.Any())
+        {
+            <form asp-action="GenerateReport" method="post" class="text-center mt-3">
+                <input type="hidden" name="SelectedTransactionCriteria" value="@Model.SelectedTransactionCriteria" />
+                <input type="hidden" name="SelectedEmployeeDetails" value="@Model.SelectedEmployeeDetails" />
+                <input type="hidden" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+                <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px; background-color: orangered;">Generate Report</button>
+            </form>
+        }
+    </div>
 
     <hr />
 
     <!-- Stock Records Table -->
-    <h3 class="text-center" style="margin-top: 20px; font-weight: bold; color: #00008B;">Stock Records</h3>
-    <div id="responsive-table" style="margin-top: 20px;">
-        <table class="table table-bordered table-striped" id="stockTable" style="width: 100%; text-align: center; border: 1px solid #000;">
+    <h3 style="margin-top: 20px; font-weight: bold; color: #00008B;">Stock Records</h3>
+    <div id="stockTableContainer" class="table-container">
+        <table class="table table-bordered table-striped" id="stockTable" style="width: 100%; text-align: left; border: 3px double #000; table-layout: fixed; margin-left: 0;">
             <thead class="bg-info text-white">
                 <tr>
-                    <th style="font-weight: bold; color: #00008B;">Transaction Code</th>
-                    <th style="font-weight: bold; color: #00008B;">Item Name</th>
-                    <th style="font-weight: bold; color: #00008B;">Stock-In</th>
-                    <th style="font-weight: bold; color: #00008B;">Stock-Out</th>
-                    <th style="font-weight: bold; color: #00008B;">Balance</th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        TCode
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Item Name
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Item Category
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: normal; padding: 8px;">
+                        Description
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Issue To
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Employee Details
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Date of Issue
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Stock-I
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Stock-O
+                        <span class="resize-handle"></span>
+                    </th>
+                    <th style="font-weight: bold; color: #00008B; white-space: nowrap; padding: 8px;">
+                        Balance
+                        <!-- No resize handle for the last column -->
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -49,21 +199,132 @@
                     @foreach (var record in Model.StockRecords)
                     {
                         <tr>
-                            <td>@record.TransactionCode</td>
-                            <td>@record.ItemName</td>
-                            <td>@record.ReceivedQuantity</td>
-                            <td>@record.IssuedQuantity</td>
-                            <td>@record.Stock</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.TransactionCode</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.ItemName</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.ItemCategory</td>
+                            <td style="white-space: normal; padding: 8px;">@record.Description</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.IssueTo</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.EmployeeDetails</td>
+                            <td style="white-space: nowrap; padding: 8px;">@(record.DateOfIssue?.ToString("yyyy-MM-dd") ?? "")</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.ReceivedQuantity</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.IssuedQuantity</td>
+                            <td style="white-space: nowrap; padding: 8px;">@record.Stock</td>
                         </tr>
                     }
                 }
                 else
                 {
                     <tr>
-                        <td colspan="5" style="text-align: center; color: gray;">No records available.</td>
+                        <td colspan="10" style="text-align: center; color: gray; padding: 8px;">No records available.</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.1.0/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable for better table functionality
+            $('#stockTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "scrollX": false, // Disable horizontal scrolling
+                "responsive": false,
+                "columnDefs": [
+                    { "width": "8%", "targets": 0 }, // Transaction Code
+                    { "width": "8%", "targets": 1 }, // Item Name
+                    { "width": "8%", "targets": 2 }, // Item Category
+                    { "width": 15%, "targets": 3 }, // Description
+                    { "width": "8%", "targets": 4 }, // Issue To
+                    { "width": 15%, "targets": 5 }, // Employee Details
+                    { "width": "8%", "targets": 6 }, // Date of Issue
+                    { "width": "6%", "targets": 7 },  // Stock-In
+                    { "width": "6%", "targets": 8 },  // Stock-Out
+                    { "width": "6%", "targets": 9 }   // Balance
+                ]
+            });
+
+            // Column resizing functionality
+            let isResizing = false;
+            let startX, startWidth, currentTh;
+
+            $(document).on('mousedown', '.resize-handle', function (e) {
+                isResizing = true;
+                currentTh = $(this).parent('th');
+                startX = e.pageX;
+                startWidth = currentTh.width();
+                e.preventDefault();
+            });
+
+            $(document).on('mousemove', function (e) {
+                if (isResizing) {
+                    const newWidth = startWidth + (e.pageX - startX);
+                    if (newWidth > 50) { // Minimum width to prevent collapse
+                        currentTh.width(newWidth);
+                        // Update DataTable column width
+                        const columnIndex = currentTh.index();
+                        const table = $('#stockTable').DataTable();
+                        table.column(columnIndex).nodes().to$().width(newWidth);
+                    }
+                }
+            });
+
+            $(document).on('mouseup', function () {
+                isResizing = false;
+            });
+
+            // AJAX form submission
+            function submitForm() {
+                var form = $('#stockReportForm');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        $('#stockTableContainer').html($(response).find('#stockTableContainer').html());
+                        $('#stockTable').DataTable().destroy();
+                        $('#stockTable').DataTable({
+                            "paging": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": false,
+                            "scrollX": false,
+                            "responsive": false,
+                            "columnDefs": [
+                                { "width": "8%", "targets": 0 },
+                                { "width": "8%", "targets": 1 },
+                                { "width": "8%", "targets": 2 },
+                                { "width": 15%, "targets": 3 },
+                                { "width": "8%", "targets": 4 },
+                                { "width": 15%, "targets": 5 },
+                                { "width": "8%", "targets": 6 },
+                                { "width": "6%", "targets": 7 },
+                                { "width": "6%", "targets": 8 },
+                                { "width": "6%", "targets": 9 }
+                            ]
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error: ' + error);
+                    }
+                });
+                return false; // Prevent default form submission
+            }
+
+            // Disable client-side validation
+            $('#stockReportForm').data('validator', null);
+            $.validator.setDefaults({
+                ignore: []
+            });
+        });
+    </script>
+}

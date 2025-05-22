@@ -305,12 +305,6 @@ D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\compressed\dnt7hmhjz
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets.build.json
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets.development.json
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets.build.endpoints.json
-D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets\msbuild.ITHelpDesk-Updated.Microsoft.AspNetCore.StaticWebAssets.props
-D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets\msbuild.ITHelpDesk-Updated.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets\msbuild.build.ITHelpDesk-Updated.props
-D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets\msbuild.buildMultiTargeting.ITHelpDesk-Updated.props
-D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets\msbuild.buildTransitive.ITHelpDesk-Updated.props
-D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets.pack.json
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets.upToDateCheck.txt
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\ITHelpDe.5601CA92.Up2Date
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\ITHelpDesk-Updated.dll
@@ -318,3 +312,4 @@ D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\refint\ITHelpDesk-Up
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\ITHelpDesk-Updated.pdb
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\ITHelpDesk-Updated.genruntimeconfig.cache
 D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\ref\ITHelpDesk-Updated.dll
+D:\ITHelpDesk-Updated\ITHelpDesk-Updated\obj\Release\net9.0\staticwebassets.build.json.cache

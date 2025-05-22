@@ -17,13 +17,19 @@ namespace ITHelpDesk_Updated.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            // Clear model state to prevent stale data
+            ModelState.Clear();
+
             var model = new VendorViewModel
             {
                 CurrentVendor = new Vendor(),
-                Vendors = GetAllVendors()
+                Vendors = GetAllVendors(),
+                IsEditMode = false // Explicitly set to create mode
             };
 
-            model.CurrentVendor.VendorCode = GetNextVendorCode();
+            string nextVendorCode = GetNextVendorCode();
+            model.CurrentVendor.VendorCode = nextVendorCode;
+            ViewData["NextVendorCode"] = nextVendorCode; // Explicitly set
 
             return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
         }
@@ -37,6 +43,7 @@ namespace ITHelpDesk_Updated.Controllers
             }
 
             ModelState.Remove("Vendors");
+            ModelState.Remove("IsEditMode");
 
             if (ModelState.IsValid)
             {
@@ -47,7 +54,7 @@ namespace ITHelpDesk_Updated.Controllers
                                         "VALUES (@VendorCode, @VendorName, @VendorNTN, @VendorCNIC, @VendorContactNo, @VendorContactPerson)";
                     SqlCommand cmd = new SqlCommand(insertQuery, connection);
 
-                    cmd.Parameters.AddWithValue("@VendorCode", model.CurrentVendor.VendorCode);
+                    cmd.Parameters.AddWithValue("@VendorCode", model.CurrentVendor.VendorCode ?? "");
                     cmd.Parameters.AddWithValue("@VendorName", model.CurrentVendor.VendorName ?? "Unknown");
                     cmd.Parameters.AddWithValue("@VendorNTN", model.CurrentVendor.VendorNTN ?? "Unknown");
                     cmd.Parameters.AddWithValue("@VendorCNIC", model.CurrentVendor.VendorCNIC ?? "Unknown");
@@ -61,6 +68,8 @@ namespace ITHelpDesk_Updated.Controllers
             }
 
             model.Vendors = GetAllVendors();
+            model.IsEditMode = false; // Ensure create mode on validation failure
+            ViewData["NextVendorCode"] = model.CurrentVendor.VendorCode; // Maintain NextVendorCode
             return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
         }
 
@@ -81,8 +90,11 @@ namespace ITHelpDesk_Updated.Controllers
             var model = new VendorViewModel
             {
                 CurrentVendor = vendor,
-                Vendors = GetAllVendors()
+                Vendors = GetAllVendors(),
+                IsEditMode = true // Explicitly set to edit mode
             };
+
+            ViewData["NextVendorCode"] = GetNextVendorCode(); // Set for consistency
 
             return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
         }
@@ -96,6 +108,7 @@ namespace ITHelpDesk_Updated.Controllers
             }
 
             ModelState.Remove("Vendors");
+            ModelState.Remove("IsEditMode");
 
             if (ModelState.IsValid)
             {
@@ -106,7 +119,7 @@ namespace ITHelpDesk_Updated.Controllers
                                         "VendorContactNo = @VendorContactNo, VendorContactPerson = @VendorContactPerson WHERE VendorCode = @VendorCode";
                     SqlCommand cmd = new SqlCommand(updateQuery, connection);
 
-                    cmd.Parameters.AddWithValue("@VendorCode", model.CurrentVendor.VendorCode);
+                    cmd.Parameters.AddWithValue("@VendorCode", model.CurrentVendor.VendorCode ?? "");
                     cmd.Parameters.AddWithValue("@VendorName", model.CurrentVendor.VendorName ?? "Unknown");
                     cmd.Parameters.AddWithValue("@VendorNTN", model.CurrentVendor.VendorNTN ?? "Unknown");
                     cmd.Parameters.AddWithValue("@VendorCNIC", model.CurrentVendor.VendorCNIC ?? "Unknown");
@@ -120,6 +133,8 @@ namespace ITHelpDesk_Updated.Controllers
             }
 
             model.Vendors = GetAllVendors();
+            model.IsEditMode = true; // Maintain edit mode on validation failure
+            ViewData["NextVendorCode"] = GetNextVendorCode(); // Set for consistency
             return View("~/Views/ITHelpDesk/CreateVendor.cshtml", model);
         }
 
@@ -137,12 +152,12 @@ namespace ITHelpDesk_Updated.Controllers
                 {
                     vendors.Add(new Vendor
                     {
-                        VendorCode = reader["VendorCode"] as string,
-                        VendorName = reader["VendorName"] as string,
-                        VendorNTN = reader["VendorNTN"] as string,
-                        VendorCNIC = reader["VendorCNIC"] as string,
-                        VendorContactNo = reader["VendorContactNo"] as string,
-                        VendorContactPerson = reader["VendorContactPerson"] as string,
+                        VendorCode = reader["VendorCode"]?.ToString(),
+                        VendorName = reader["VendorName"]?.ToString(),
+                        VendorNTN = reader["VendorNTN"]?.ToString(),
+                        VendorCNIC = reader["VendorCNIC"]?.ToString(),
+                        VendorContactNo = reader["VendorContactNo"]?.ToString(),
+                        VendorContactPerson = reader["VendorContactPerson"]?.ToString(),
                     });
                 }
             }
@@ -157,19 +172,19 @@ namespace ITHelpDesk_Updated.Controllers
                 connection.Open();
                 string query = "SELECT VendorCode, VendorName, VendorNTN, VendorCNIC, VendorContactNo, VendorContactPerson FROM Vendors WHERE VendorCode = @VendorCode";
                 SqlCommand cmd = new SqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@VendorCode", vendorCode);
+                cmd.Parameters.AddWithValue("@VendorCode", vendorCode ?? "");
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
                     vendor = new Vendor
                     {
-                        VendorCode = reader["VendorCode"] as string,
-                        VendorName = reader["VendorName"] as string,
-                        VendorNTN = reader["VendorNTN"] as string,
-                        VendorCNIC = reader["VendorCNIC"] as string,
-                        VendorContactNo = reader["VendorContactNo"] as string,
-                        VendorContactPerson = reader["VendorContactPerson"] as string,
+                        VendorCode = reader["VendorCode"]?.ToString(),
+                        VendorName = reader["VendorName"]?.ToString(),
+                        VendorNTN = reader["VendorNTN"]?.ToString(),
+                        VendorCNIC = reader["VendorCNIC"]?.ToString(),
+                        VendorContactNo = reader["VendorContactNo"]?.ToString(),
+                        VendorContactPerson = reader["VendorContactPerson"]?.ToString(),
                     };
                 }
             }
@@ -188,7 +203,7 @@ namespace ITHelpDesk_Updated.Controllers
 
                 if (reader.Read())
                 {
-                    string lastVendorCode = reader["VendorCode"] as string;
+                    string lastVendorCode = reader["VendorCode"]?.ToString();
                     if (!string.IsNullOrEmpty(lastVendorCode))
                     {
                         int lastVendorNum = int.Parse(lastVendorCode.Substring(1));

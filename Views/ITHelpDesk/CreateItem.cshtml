@@ -1,569 +1,683 @@
 ﻿@model ITHelpDesk_Updated.Models.ItemViewModel
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 style="margin-top: 0; text-align: center; color: #00008B; font-weight: bold">Create Item (Accessories & Main Hardware)</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Create Item (Accessories & Main Hardware)</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons for Edit Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
 
-            <!-- Item Form -->
-            <form asp-action="@(Model.CurrentItem.ItemCode == null ? "CreateItem" : "EditItem")" method="post" id="itemForm">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <input type="hidden" asp-for="CurrentItem.ItemCode" />
-                <div class="row form-row" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
-                    <!-- Item Section -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ItemSection" style="font-weight: bold;" data-label="Item Section">Item Section</label>
-                        <select asp-for="CurrentItem.ItemSection" class="form-control" id="itemSectionSelect" onchange="updateItemNameOptions()" required>
-                            <option value="">--Select Section--</option>
-                            <option value="Main Hardware">Main Hardware</option>
-                            <option value="Accessories">Accessories</option>
-                        </select>
-                        <span asp-validation-for="CurrentItem.ItemSection" class="text-danger"></span>
-                    </div>
+        .container {
+            padding: 30px;
+            max-width: 1400px;
+        }
 
-                    <!-- Item Name -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ItemName" style="font-weight: bold;" data-label="Item Name">Item Name</label>
-                        <div style="display: flex; align-items: center;">
-                            <select asp-for="CurrentItem.ItemName" class="form-control" id="itemNameSelect" onchange="updateCategoryOptions()" required>
-                                <option value="">--Select Item--</option>
+        h2, h3 {
+            text-align: center;
+            font-weight: bold;
+            color: #00008B; /* Blue headings */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid #000000; /* Black border for inputs */
+        }
+
+            .form-control:focus {
+                border: 1px solid #000000; /* Black border on focus */
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow on focus */
+            }
+
+        .is-invalid {
+            border-color: #dc3545 !important; /* Red border for validation errors */
+        }
+
+        .text-danger {
+            font-size: 0.875em;
+            margin-top: 0.25em;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .table {
+            max-width: 1200px; /* Fit within single screen */
+            margin: 20px auto 0;
+            border: 4px double #000000; /* Dark double black border */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            white-space: nowrap; /* Prevent wrapping except Category */
+        }
+
+        th {
+            background-color: #e7f3ff; /* Light blue for bg-info */
+            color: #00008B; /* Blue text */
+        }
+
+            /* Specific column widths */
+            th:nth-child(1), td:nth-child(1) {
+                width: 12%;
+            }
+            /* Item Code */
+            th:nth-child(2), td:nth-child(2) {
+                width: 12%;
+            }
+            /* Item Section */
+            th:nth-child(3), td:nth-child(3) {
+                width: 15%;
+            }
+            /* Item Name */
+            th:nth-child(4), td:nth-child(4) {
+                width: 15%;
+                white-space: normal; /* Allow wrapping for Category */
+                overflow-wrap: break-word;
+            }
+
+            th:nth-child(5), td:nth-child(5) {
+                width: 12%;
+            }
+            /* Type */
+            th:nth-child(6), td:nth-child(6) {
+                width: 12%;
+            }
+            /* Storage */
+            th:nth-child(7), td:nth-child(7) {
+                width: 12%;
+            }
+            /* Used For */
+            th:nth-child(8), td:nth-child(8) {
+                width: 10%;
+            }
+        /* Actions */
+
+        /* Responsive table for mobile */
+        @@media (max-width: 768px) {
+            .table
+
+        {
+            display: block;
+            overflow-x: auto; /* Horizontal scroll for mobile */
+            font-size: 0.9em; /* Slightly smaller font */
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Create Item (Accessories & Main Hardware)</h2>
+
+                <!-- Item Form -->
+                <form asp-action="@(Model.CurrentItem.ItemCode == null ? "CreateItem" : "EditItem")" method="post" id="itemForm">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <input type="hidden" asp-for="CurrentItem.ItemCode" />
+                    <div class="row form-row">
+                        <!-- Item Section -->
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label for="ItemSection" style="font-weight: bold;" data-label="Item Section">Item Section</label>
+                            <select asp-for="CurrentItem.ItemSection" class="form-control" id="itemSectionSelect" onchange="updateItemNameOptions()" required>
+                                <option value="">--Select Section--</option>
+                                <option value="Main Hardware">Main Hardware</option>
+                                <option value="Accessories">Accessories</option>
                             </select>
-                            <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddItemNameForm()">+</button>
+                            <span asp-validation-for="CurrentItem.ItemSection" class="text-danger"></span>
                         </div>
-                        <div id="addItemNameForm" style="display: none; margin-top: 10px;">
-                            <input type="text" id="newItemNameInput" class="form-control" placeholder="Enter new Item Name" />
-                            <button type="button" class="btn btn-primary" id="addItemNameBtn" style="margin-top: 5px;" onclick="addNewItemName()">Add</button>
-                            <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddItemNameForm()">Cancel</button>
-                        </div>
-                        <span asp-validation-for="CurrentItem.ItemName" class="text-danger"></span>
-                    </div>
 
-                    <!-- Item Category -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ItemCategory" style="font-weight: bold;" data-label="Item Category">Item Category</label>
-                        <div style="display: flex; align-items: center;">
-                            <select asp-for="CurrentItem.ItemCategory" class="form-control" id="categorySelect" required>
-                                <option value="">--Select Category--</option>
-                            </select>
-                            <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddCategoryForm()">+</button>
+                        <!-- Item Name -->
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label for="ItemName" style="font-weight: bold;" data-label="Item Name">Item Name</label>
+                            <div style="display: flex; align-items: center;">
+                                <select asp-for="CurrentItem.ItemName" class="form-control" id="itemNameSelect" onchange="updateCategoryOptions()" required>
+                                    <option value="">--Select Item--</option>
+                                </select>
+                                <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddItemNameForm()">+</button>
+                            </div>
+                            <div id="addItemNameForm" style="display: none; margin-top: 10px;">
+                                <input type="text" id="newItemNameInput" class="form-control" placeholder="Enter new Item Name" />
+                                <button type="button" class="btn btn-primary" id="addItemNameBtn" style="margin-top: 5px;" onclick="addNewItemName()">Add</button>
+                                <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddItemNameForm()">Cancel</button>
+                            </div>
+                            <span asp-validation-for="CurrentItem.ItemName" class="text-danger"></span>
                         </div>
-                        <div id="addCategoryForm" style="display: none; margin-top: 10px;">
-                            <input type="text" id="newCategoryInput" class="form-control" placeholder="Enter new Category" />
-                            <button type="button" class="btn btn-primary" id="addCategoryBtn" style="margin-top: 5px;" onclick="addNewCategory()">Add</button>
-                            <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddCategoryForm()">Cancel</button>
-                        </div>
-                        <span asp-validation-for="CurrentItem.ItemCategory" class="text-danger"></span>
-                    </div>
 
-                    <!-- Item Type -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ItemType" style="font-weight: bold;" data-label="Item Type">Item Type</label>
-                        <div style="display: flex; align-items: center;">
-                            <select asp-for="CurrentItem.ItemType" class="form-control" id="itemTypeSelect" required>
-                                <option value="">--Select Item Type--</option>
-                                <option value="New">New</option>
-                                <option value="Old">Old</option>
-                                <option value="Used">Used</option>
-                                <option value="Refurbished">Refurbished</option>
-                                <option value="Branded">Branded</option>
+                        <!-- Item Category -->
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label for="ItemCategory" style="font-weight: bold;" data-label="Item Category">Item Category</label>
+                            <div style="display: flex; align-items: center;">
+                                <select asp-for="CurrentItem.ItemCategory" class="form-control" id="categorySelect" required>
+                                    <option value="">--Select Category--</option>
+                                </select>
+                                <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddCategoryForm()">+</button>
+                            </div>
+                            <div id="addCategoryForm" style="display: none; margin-top: 10px;">
+                                <input type="text" id="newCategoryInput" class="form-control" placeholder="Enter new Category" />
+                                <button type="button" class="btn btn-primary" id="addCategoryBtn" style="margin-top: 5px;" onclick="addNewCategory()">Add</button>
+                                <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddCategoryForm()">Cancel</button>
+                            </div>
+                            <span asp-validation-for="CurrentItem.ItemCategory" class="text-danger"></span>
+                        </div>
+
+                        <!-- Item Type -->
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label for="ItemType" style="font-weight: bold;" data-label="Item Type">Item Type</label>
+                            <div style="display: flex; align-items: center;">
+                                <select asp-for="CurrentItem.ItemType" class="form-control" id="itemTypeSelect" required>
+                                    <option value="">--Select Item Type--</option>
+                                    <option value="New">New</option>
+                                    <option value="Old">Old</option>
+                                    <option value="Used">Used</option>
+                                    <option value="Refurbished">Refurbished</option>
+                                    <option value="Branded">Branded</option>
+                                    <option value="Not Required">Not Required</option>
+                                </select>
+                                <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddItemTypeForm()">+</button>
+                            </div>
+                            <div id="addItemTypeForm" style="display: none; margin-top: 10px;">
+                                <input type="text" id="newItemTypeInput" class="form-control" placeholder="Enter new Item Type" />
+                                <button type="button" class="btn btn-primary" id="addItemTypeBtn" style="margin-top: 5px;" onclick="addNewItemType()">Add</button>
+                                <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddItemTypeForm()">Cancel</button>
+                            </div>
+                            <span asp-validation-for="CurrentItem.ItemType" class="text-danger"></span>
+                        </div>
+
+                        <!-- Item Storage -->
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label for="ItemStorage" style="font-weight: bold;" data-label="Item Storage">Item Storage</label>
+                            <div style="display: flex; align-items: center;">
+                                <select asp-for="CurrentItem.ItemStorage" class="form-control" id="itemStorageSelect" required>
+                                    <option value="">--Select Item Storage--</option>
+                                    <option value="8 GB">8 GB</option>
+                                    <option value="16 GB">16 GB</option>
+                                    <option value="32 GB">32 GB</option>
+                                    <option value="64 GB">64 GB</option>
+                                    <option value="128 GB">128 GB</option>
+                                    <option value="256 GB">256 GB</option>
+                                    <option value="512 GB">512 GB</option>
+                                    <option value="1 TB">1 TB</option>
+                                    <option value="2 TB">2 TB</option>
+                                    <option value="Not Required">Not Required</option>
+                                </select>
+                                <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddStorageForm()">+</button>
+                            </div>
+                            <div id="addStorageForm" style="display: none; margin-top: 10px;">
+                                <input type="text" id="newStorageInput" class="form-control" placeholder="Enter new Storage" />
+                                <button type="button" class="btn btn-primary" id="addStorageBtn" style="margin-top: 5px;" onclick="addNewStorage()">Add</button>
+                                <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddStorageForm()">Cancel</button>
+                            </div>
+                            <span asp-validation-for="CurrentItem.ItemStorage" class="text-danger"></span>
+                        </div>
+
+                        <!-- Item Used For -->
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label for="ItemUsedFor" style="font-weight: bold;" data-label="Item Used For">Item Used For</label>
+                            <select asp-for="CurrentItem.ItemUsedFor" class="form-control" id="itemUsedForSelect" required>
+                                <option value="">--Select Item Used For--</option>
+                                <option value="Laptop">Laptop</option>
+                                <option value="Desktop">Desktop</option>
                                 <option value="Not Required">Not Required</option>
                             </select>
-                            <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddItemTypeForm()">+</button>
+                            <span asp-validation-for="CurrentItem.ItemUsedFor" class="text-danger"></span>
                         </div>
-                        <div id="addItemTypeForm" style="display: none; margin-top: 10px;">
-                            <input type="text" id="newItemTypeInput" class="form-control" placeholder="Enter new Item Type" />
-                            <button type="button" class="btn btn-primary" id="addItemTypeBtn" style="margin-top: 5px;" onclick="addNewItemType()">Add</button>
-                            <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddItemTypeForm()">Cancel</button>
-                        </div>
-                        <span asp-validation-for="CurrentItem.ItemType" class="text-danger"></span>
                     </div>
 
-                    <!-- Item Storage -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ItemStorage" style="font-weight: bold;" data-label="Item Storage">Item Storage</label>
-                        <div style="display: flex; align-items: center;">
-                            <select asp-for="CurrentItem.ItemStorage" class="form-control" id="itemStorageSelect" required>
-                                <option value="">--Select Item Storage--</option>
-                                <option value="8 GB">8 GB</option>
-                                <option value="16 GB">16 GB</option>
-                                <option value="32 GB">32 GB</option>
-                                <option value="64 GB">64 GB</option>
-                                <option value="128 GB">128 GB</option>
-                                <option value="256 GB">256 GB</option>
-                                <option value="512 GB">512 GB</option>
-                                <option value="1 TB">1 TB</option>
-                                <option value="2 TB">2 TB</option>
-                                <option value="Not Required">Not Required</option>
-                            </select>
-                            <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="showAddStorageForm()">+</button>
-                        </div>
-                        <div id="addStorageForm" style="display: none; margin-top: 10px;">
-                            <input type="text" id="newStorageInput" class="form-control" placeholder="Enter new Storage" />
-                            <button type="button" class="btn btn-primary" id="addStorageBtn" style="margin-top: 5px;" onclick="addNewStorage()">Add</button>
-                            <button type="button" class="btn btn-secondary" style="margin-top: 5px; margin-left: 5px;" onclick="hideAddStorageForm()">Cancel</button>
-                        </div>
-                        <span asp-validation-for="CurrentItem.ItemStorage" class="text-danger"></span>
+                    <!-- Submit Button -->
+                    <div class="form-group text-center mt-3">
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">@(Model.CurrentItem.ItemCode == null ? "Submit Item" : "Update Item")</button>
                     </div>
+                </form>
 
-                    <!-- Item Used For -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ItemUsedFor" style="font-weight: bold;" data-label="Item Used For">Item Used For</label>
-                        <select asp-for="CurrentItem.ItemUsedFor" class="form-control" id="itemUsedForSelect" required>
-                            <option value="">--Select Item Used For--</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Desktop">Desktop</option>
-                            <option value="Not Required">Not Required</option>
-                        </select>
-                        <span asp-validation-for="CurrentItem.ItemUsedFor" class="text-danger"></span>
-                    </div>
-                </div>
+                <hr />
 
-                <!-- Submit Button -->
-                <div class="form-group text-center mt-3">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">@(Model.CurrentItem.ItemCode == null ? "Submit Item" : "Update Item")</button>
-                </div>
-            </form>
-
-            <hr />
-
-            <!-- Submitted Items Table -->
-            <h3 class="text-center" style="margin-top: 20px; font-weight: bold; color: #00008B;">Submitted Items</h3>
-            <div id="responsive-table" style="margin-top: 20px;">
-                <table class="table table-bordered table-striped" id="itemsTable" style="width: 100%; text-align: center; border: 1px solid #000;">
-                    <thead class="bg-info text-white">
-                        <tr>
-                            <th data-title="Item Code" style="font-weight: bold; color: #00008B;">Item Code</th>
-                            <th data-title="Item Section" style="font-weight: bold; color: #00008B;">Item Section</th>
-                            <th data-title="Item Name" style="font-weight: bold; color: #00008B;">Item Name</th>
-                            <th data-title="Category" style="font-weight: bold; color: #00008B;">Category</th>
-                            <th data-title="Type" style="font-weight: bold; color: #00008B;">Type</th>
-                            <th data-title="Storage" style="font-weight: bold; color: #00008B;">Storage</th>
-                            <th data-title="Used For" style="font-weight: bold; color: #00008B;">Used For</th>
-                            <th data-title="Actions" style="font-weight: bold; color: #00008B;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Items != null && Model.Items.Any())
-                        {
-                            @foreach (var item in Model.Items)
+                <!-- Submitted Items Table -->
+                <h3>Submitted Items</h3>
+                <div id="responsive-table">
+                    <table class="table table-bordered table-striped" id="itemsTable">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th data-title="Item Code">Item Code</th>
+                                <th data-title="Item Section">Item Section</th>
+                                <th data-title="Item Name">Item Name</th>
+                                <th data-title="Category">Category</th>
+                                <th data-title="Type">Type</th>
+                                <th data-title="Storage">Storage</th>
+                                <th data-title="Used For">Used For</th>
+                                <th data-title="Actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Items != null && Model.Items.Any())
+                            {
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td data-title="Item Code">@item.ItemCode</td>
+                                        <td data-title="Item Section">@item.ItemSection</td>
+                                        <td data-title="Item Name">@item.ItemName</td>
+                                        <td data-title="Category">@item.ItemCategory</td>
+                                        <td data-title="Type">@item.ItemType</td>
+                                        <td data-title="Storage">@item.ItemStorage</td>
+                                        <td data-title="Used For">@item.ItemUsedFor</td>
+                                        <td data-title="Actions">
+                                            <a asp-action="EditItem" asp-route-itemCode="@item.ItemCode" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td data-title="Item Code">@item.ItemCode</td>
-                                    <td data-title="Item Section">@item.ItemSection</td>
-                                    <td data-title="Item Name">@item.ItemName</td>
-                                    <td data-title="Category">@item.ItemCategory</td>
-                                    <td data-title="Type">@item.ItemType</td>
-                                    <td data-title="Storage">@item.ItemStorage</td>
-                                    <td data-title="Used For">@item.ItemUsedFor</td>
-                                    <td data-title="Actions">
-                                        <a asp-action="EditItem" asp-route-itemCode="@item.ItemCode" class="btn btn-primary btn-sm">Edit</a>
-                                    </td>
+                                    <td colspan="8" style="text-align: center; color: gray;">No items available.</td>
                                 </tr>
                             }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="8" style="text-align: center; color: gray;">No items available.</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Initialize with server-side custom values
-        const customItems = @Html.Raw(Json.Serialize(Model.CustomItemNames));
-        const customCategories = @Html.Raw(Json.Serialize(Model.CustomCategories));
-        const customItemTypes = @Html.Raw(Json.Serialize(Model.CustomItemTypes));
-        const customStorages = @Html.Raw(Json.Serialize(Model.CustomStorages));
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-        // Enable client-side validation
-        $(document).ready(function () {
-            $("#itemForm").validate({
-                errorElement: 'span',
-                errorClass: 'text-danger',
-                highlight: function (element) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element) {
-                    $(element).removeClass('is-invalid');
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            // Initialize with server-side custom values
+            const customItems = @Html.Raw(Json.Serialize(Model.CustomItemNames));
+            const customCategories = @Html.Raw(Json.Serialize(Model.CustomCategories));
+            const customItemTypes = @Html.Raw(Json.Serialize(Model.CustomItemTypes));
+            const customStorages = @Html.Raw(Json.Serialize(Model.CustomStorages));
+
+            // Enable client-side validation
+            $(document).ready(function () {
+                $("#itemForm").validate({
+                    errorElement: 'span',
+                    errorClass: 'text-danger',
+                    highlight: function (element) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        $(element).removeClass('is-invalid');
+                    }
+                });
+
+                // Initialize dropdowns based on current values
+                var itemSection = '@Model.CurrentItem.ItemSection';
+                if (itemSection) {
+                    document.getElementById('itemSectionSelect').value = itemSection;
                 }
+                updateItemNameOptions();
+                updateCategoryOptions();
+                updateItemTypeOptions();
+                updateStorageOptions();
             });
 
-            // Initialize dropdowns based on current values
-            var itemSection = '@Model.CurrentItem.ItemSection';
-            if (itemSection) {
-                document.getElementById('itemSectionSelect').value = itemSection;
-            }
-            updateItemNameOptions();
-            updateCategoryOptions();
-            updateItemTypeOptions();
-            updateStorageOptions();
-        });
+            function updateItemNameOptions() {
+                console.log('Updating ItemName options');
+                const section = document.getElementById('itemSectionSelect').value;
+                const itemNameSelect = document.getElementById('itemNameSelect');
+                const currentItemName = '@Html.Raw(Model.CurrentItem.ItemName ?? "")';
+                itemNameSelect.innerHTML = '<option value="">--Select Item--</option>';
 
-        function updateItemNameOptions() {
-            console.log('Updating ItemName options');
-            const section = document.getElementById('itemSectionSelect').value;
-            const itemNameSelect = document.getElementById('itemNameSelect');
-            const currentItemName = '@Html.Raw(Model.CurrentItem.ItemName ?? "")';
-            itemNameSelect.innerHTML = '<option value="">--Select Item--</option>';
+                const items = section === 'Main Hardware' ? [
+                    'LCD', 'BareBone', 'CPU', 'Laptop', 'Cameras', 'DVR/NVR',
+                    'Printer', 'Scanner', 'Toner', 'Network Switch', 'UPS', 'Projector'
+                ] : section === 'Accessories' ? [
+                    'HDD', 'RAM', 'Motherboard', 'LAN Card', 'Connectors', 'Keyboard',
+                    'Mouse', 'USB', 'UPS Batteries', 'Laptop Battery', 'Laptop Charger',
+                    'Recycle Toner', 'Miscellaneous'
+                ] : [];
 
-            const items = section === 'Main Hardware' ? [
-                'LCD', 'BareBone', 'CPU', 'Laptop', 'Cameras', 'DVR/NVR',
-                'Printer', 'Scanner', 'Toner', 'Network Switch', 'UPS', 'Projector'
-            ] : section === 'Accessories' ? [
-                'HDD', 'RAM', 'Motherboard', 'LAN Card', 'Connectors', 'Keyboard',
-                'Mouse', 'USB', 'UPS Batteries', 'Laptop Battery', 'Laptop Charger',
-                'Recycle Toner', 'Miscellaneous'
-            ] : [];
-
-            items.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item;
-                option.text = item;
-                itemNameSelect.appendChild(option);
-            });
-
-            // Add custom items for the section
-            if (customItems[section]) {
-                customItems[section].forEach(item => {
-                    if (!items.includes(item)) {
-                        const option = document.createElement('option');
-                        option.value = item;
-                        option.text = item;
-                        itemNameSelect.appendChild(option);
-                    }
+                items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.text = item;
+                    itemNameSelect.appendChild(option);
                 });
+
+                // Add custom items for the section
+                if (customItems[section]) {
+                    customItems[section].forEach(item => {
+                        if (!items.includes(item)) {
+                            const option = document.createElement('option');
+                            option.value = item;
+                            option.text = item;
+                            itemNameSelect.appendChild(option);
+                        }
+                    });
+                }
+
+                itemNameSelect.value = currentItemName || '';
+                console.log('ItemName dropdown updated. Options:', Array.from(itemNameSelect.options).map(opt => opt.value));
             }
 
-            itemNameSelect.value = currentItemName || '';
-            console.log('ItemName dropdown updated. Options:', Array.from(itemNameSelect.options).map(opt => opt.value));
-        }
+            function updateCategoryOptions() {
+                console.log('Updating Category options');
+                const itemName = document.getElementById('itemNameSelect').value;
+                const categorySelect = document.getElementById('categorySelect');
+                const currentCategory = '@Html.Raw(Model.CurrentItem.ItemCategory ?? "")';
+                categorySelect.innerHTML = '<option value="">--Select Category--</option>';
 
-        function updateCategoryOptions() {
-            console.log('Updating Category options');
-            const itemName = document.getElementById('itemNameSelect').value;
-            const categorySelect = document.getElementById('categorySelect');
-            const currentCategory = '@Html.Raw(Model.CurrentItem.ItemCategory ?? "")';
-            categorySelect.innerHTML = '<option value="">--Select Category--</option>';
+                // Predefined categories for specific items
+                const predefinedCategories = {
+                    'HDD': ['SATA', 'SSD', 'SAS', 'SSD Enterprise', 'M.2'],
+                    'RAM': ['DDR2', 'DDR3', 'DDR4'],
+                    'Connectors': ['D2 Type'],
+                    'Keyboard': ['None'],
+                    'Mouse': ['None'],
+                    'USB': ['None'],
+                    'Cameras': ['Analog', 'Digital']
+                };
 
-            // Predefined categories for specific items
-            const predefinedCategories = {
-                'HDD': ['SATA', 'SSD', 'SAS', 'SSD Enterprise', 'M.2'],
-                'RAM': ['DDR2', 'DDR3', 'DDR4'],
-                'Connectors': ['D2 Type'],
-                'Keyboard': ['None'],
-                'Mouse': ['None'],
-                'USB': ['None'],
-                'Cameras': ['Analog', 'Digital']
-            };
+                // Get categories for the selected item, default to ['Not Required']
+                const categories = predefinedCategories[itemName] || ['Not Required'];
 
-            // Get categories for the selected item, default to ['Not Required']
-            const categories = predefinedCategories[itemName] || ['Not Required'];
-
-            // Add predefined categories
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category;
-                option.text = category;
-                categorySelect.appendChild(option);
-            });
-
-            // Add custom categories for the selected item
-            if (customCategories[itemName]) {
-                customCategories[itemName].forEach(category => {
-                    if (!categories.includes(category)) {
-                        const option = document.createElement('option');
-                        option.value = category;
-                        option.text = category;
-                        categorySelect.appendChild(option);
-                    }
+                // Add predefined categories
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.text = category;
+                    categorySelect.appendChild(option);
                 });
+
+                // Add custom categories for the selected item
+                if (customCategories[itemName]) {
+                    customCategories[itemName].forEach(category => {
+                        if (!categories.includes(category)) {
+                            const option = document.createElement('option');
+                            option.value = category;
+                            option.text = category;
+                            categorySelect.appendChild(option);
+                        }
+                    });
+                }
+
+                // Restore current category if valid
+                if (currentCategory && (categories.includes(currentCategory) || (customCategories[itemName] && customCategories[itemName].includes(currentCategory)))) {
+                    categorySelect.value = currentCategory;
+                } else {
+                    categorySelect.value = '';
+                }
+
+                console.log('Category dropdown updated for ItemName:', itemName);
+                console.log('Categories available:', Array.from(categorySelect.options).map(opt => opt.value));
+                console.log('Custom categories:', customCategories);
             }
 
-            // Restore current category if valid
-            if (currentCategory && (categories.includes(currentCategory) || (customCategories[itemName] && customCategories[itemName].includes(currentCategory)))) {
-                categorySelect.value = currentCategory;
-            } else {
-                categorySelect.value = '';
-            }
+            function updateItemTypeOptions() {
+                console.log('Updating ItemType options');
+                const itemTypeSelect = document.getElementById('itemTypeSelect');
+                const currentItemType = '@Html.Raw(Model.CurrentItem.ItemType ?? "")';
+                itemTypeSelect.innerHTML = '<option value="">--Select Item Type--</option>';
 
-            console.log('Category dropdown updated for ItemName:', itemName);
-            console.log('Categories available:', Array.from(categorySelect.options).map(opt => opt.value));
-            console.log('Custom categories:', customCategories);
-        }
-
-        function updateItemTypeOptions() {
-            console.log('Updating ItemType options');
-            const itemTypeSelect = document.getElementById('itemTypeSelect');
-            const currentItemType = '@Html.Raw(Model.CurrentItem.ItemType ?? "")';
-            itemTypeSelect.innerHTML = '<option value="">--Select Item Type--</option>';
-
-            const predefinedItemTypes = ['New', 'Old', 'Used', 'Refurbished', 'Branded', 'Not Required'];
-            predefinedItemTypes.forEach(type => {
-                const option = document.createElement('option');
-                option.value = type;
-                option.text = type;
-                itemTypeSelect.appendChild(option);
-            });
-
-            // Add custom item types
-            customItemTypes.forEach(type => {
-                if (!predefinedItemTypes.includes(type)) {
+                const predefinedItemTypes = ['New', 'Old', 'Used', 'Refurbished', 'Branded', 'Not Required'];
+                predefinedItemTypes.forEach(type => {
                     const option = document.createElement('option');
                     option.value = type;
                     option.text = type;
                     itemTypeSelect.appendChild(option);
-                }
-            });
+                });
 
-            itemTypeSelect.value = currentItemType || '';
-            console.log('ItemType dropdown updated. Options:', Array.from(itemTypeSelect.options).map(opt => opt.value));
-        }
+                // Add custom item types
+                customItemTypes.forEach(type => {
+                    if (!predefinedItemTypes.includes(type)) {
+                        const option = document.createElement('option');
+                        option.value = type;
+                        option.text = type;
+                        itemTypeSelect.appendChild(option);
+                    }
+                });
 
-        function updateStorageOptions() {
-            console.log('Updating Storage options');
-            const storageSelect = document.getElementById('itemStorageSelect');
-            const currentStorage = '@Html.Raw(Model.CurrentItem.ItemStorage ?? "")';
-            storageSelect.innerHTML = '<option value="">--Select Item Storage--</option>';
+                itemTypeSelect.value = currentItemType || '';
+                console.log('ItemType dropdown updated. Options:', Array.from(itemTypeSelect.options).map(opt => opt.value));
+            }
 
-            const predefinedStorages = ['8 GB', '16 GB', '32 GB', '64 GB', '128 GB', '256 GB', '512 GB', '1 TB', '2 TB', 'Not Required'];
-            predefinedStorages.forEach(storage => {
-                const option = document.createElement('option');
-                option.value = storage;
-                option.text = storage;
-                storageSelect.appendChild(option);
-            });
+            function updateStorageOptions() {
+                console.log('Updating Storage options');
+                const storageSelect = document.getElementById('itemStorageSelect');
+                const currentStorage = '@Html.Raw(Model.CurrentItem.ItemStorage ?? "")';
+                storageSelect.innerHTML = '<option value="">--Select Item Storage--</option>';
 
-            // Add custom storages
-            customStorages.forEach(storage => {
-                if (!predefinedStorages.includes(storage)) {
+                const predefinedStorages = ['8 GB', '16 GB', '32 GB', '64 GB', '128 GB', '256 GB', '512 GB', '1 TB', '2 TB', 'Not Required'];
+                predefinedStorages.forEach(storage => {
                     const option = document.createElement('option');
                     option.value = storage;
                     option.text = storage;
                     storageSelect.appendChild(option);
-                }
-            });
+                });
 
-            storageSelect.value = currentStorage || '';
-            console.log('Storage dropdown updated. Options:', Array.from(storageSelect.options).map(opt => opt.value));
-        }
+                // Add custom storages
+                customStorages.forEach(storage => {
+                    if (!predefinedStorages.includes(storage)) {
+                        const option = document.createElement('option');
+                        option.value = storage;
+                        option.text = storage;
+                        storageSelect.appendChild(option);
+                    }
+                });
 
-        // Show/Hide Inline Forms
-        function showAddItemNameForm() {
-            document.getElementById('addItemNameForm').style.display = 'block';
-        }
-
-        function hideAddItemNameForm() {
-            document.getElementById('addItemNameForm').style.display = 'none';
-            document.getElementById('newItemNameInput').value = '';
-        }
-
-        function showAddCategoryForm() {
-            document.getElementById('addCategoryForm').style.display = 'block';
-        }
-
-        function hideAddCategoryForm() {
-            document.getElementById('addCategoryForm').style.display = 'none';
-            document.getElementById('newCategoryInput').value = '';
-        }
-
-        function showAddItemTypeForm() {
-            document.getElementById('addItemTypeForm').style.display = 'block';
-        }
-
-        function hideAddItemTypeForm() {
-            document.getElementById('addItemTypeForm').style.display = 'none';
-            document.getElementById('newItemTypeInput').value = '';
-        }
-
-        function showAddStorageForm() {
-            document.getElementById('addStorageForm').style.display = 'block';
-        }
-
-        function hideAddStorageForm() {
-            document.getElementById('addStorageForm').style.display = 'none';
-            document.getElementById('newStorageInput').value = '';
-        }
-
-        // Add New Options
-        function addNewItemName() {
-            try {
-                const addBtn = document.getElementById('addItemNameBtn');
-                addBtn.disabled = true;
-                addBtn.textContent = 'Adding...';
-
-                const newItemName = document.getElementById('newItemNameInput').value.trim();
-                const section = document.getElementById('itemSectionSelect').value;
-                if (!newItemName || !section) {
-                    alert('Please select an Item Section and enter a valid Item Name.');
-                    return;
-                }
-
-                const itemNameSelect = document.getElementById('itemNameSelect');
-                if (Array.from(itemNameSelect.options).some(opt => opt.value === newItemName)) {
-                    alert('Item Name already exists.');
-                    return;
-                }
-
-                // Store in custom items
-                if (!customItems[section]) customItems[section] = [];
-                customItems[section].push(newItemName);
-                console.log('Added ItemName:', newItemName, 'to section:', section);
-                console.log('Custom items:', customItems);
-
-                // Update dropdown
-                updateItemNameOptions();
-                itemNameSelect.value = newItemName;
-                updateCategoryOptions(); // Update categories for the new item
-                hideAddItemNameForm();
-            } catch (error) {
-                console.error('Error adding new item name:', error);
-                alert('An error occurred while adding the item name. Please try again.');
-            } finally {
-                const addBtn = document.getElementById('addItemNameBtn');
-                addBtn.disabled = false;
-                addBtn.textContent = 'Add';
+                storageSelect.value = currentStorage || '';
+                console.log('Storage dropdown updated. Options:', Array.from(storageSelect.options).map(opt => opt.value));
             }
-        }
 
-        function addNewCategory() {
-            try {
-                const addBtn = document.getElementById('addCategoryBtn');
-                addBtn.disabled = true;
-                addBtn.textContent = 'Adding...';
-
-                const newCategory = document.getElementById('newCategoryInput').value.trim();
-                const itemName = document.getElementById('itemNameSelect').value;
-                if (!newCategory || !itemName) {
-                    alert('Please select an Item Name and enter a valid Category.');
-                    return;
-                }
-
-                const categorySelect = document.getElementById('categorySelect');
-                if (Array.from(categorySelect.options).some(opt => opt.value === newCategory)) {
-                    alert('Category already exists.');
-                    return;
-                }
-
-                // Store in custom categories
-                if (!customCategories[itemName]) customCategories[itemName] = [];
-                customCategories[itemName].push(newCategory);
-                console.log('Added Category:', newCategory, 'for ItemName:', itemName);
-                console.log('Custom categories:', customCategories);
-
-                // Update dropdown
-                updateCategoryOptions();
-                categorySelect.value = newCategory;
-                hideAddCategoryForm();
-            } catch (error) {
-                console.error('Error adding new category:', error);
-                alert('An error occurred while adding the category. Please try again.');
-            } finally {
-                const addBtn = document.getElementById('addCategoryBtn');
-                addBtn.disabled = false;
-                addBtn.textContent = 'Add';
+            // Show/Hide Inline Forms
+            function showAddItemNameForm() {
+                document.getElementById('addItemNameForm').style.display = 'block';
             }
-        }
 
-        function addNewItemType() {
-            try {
-                const addBtn = document.getElementById('addItemTypeBtn');
-                addBtn.disabled = true;
-                addBtn.textContent = 'Adding...';
-
-                const newItemType = document.getElementById('newItemTypeInput').value.trim();
-                if (!newItemType) {
-                    alert('Please enter a valid Item Type.');
-                    return;
-                }
-
-                const itemTypeSelect = document.getElementById('itemTypeSelect');
-                if (Array.from(itemTypeSelect.options).some(opt => opt.value === newItemType)) {
-                    alert('Item Type already exists.');
-                    return;
-                }
-
-                // Store in custom item types
-                customItemTypes.push(newItemType);
-                console.log('Added ItemType:', newItemType);
-                console.log('Custom item types:', customItemTypes);
-
-                // Update dropdown
-                updateItemTypeOptions();
-                itemTypeSelect.value = newItemType;
-                hideAddItemTypeForm();
-            } catch (error) {
-                console.error('Error adding new item type:', error);
-                alert('An error occurred while adding the item type. Please try again.');
-            } finally {
-                const addBtn = document.getElementById('addItemTypeBtn');
-                addBtn.disabled = false;
-                addBtn.textContent = 'Add';
+            function hideAddItemNameForm() {
+                document.getElementById('addItemNameForm').style.display = 'none';
+                document.getElementById('newItemNameInput').value = '';
             }
-        }
 
-        function addNewStorage() {
-            try {
-                const addBtn = document.getElementById('addStorageBtn');
-                addBtn.disabled = true;
-                addBtn.textContent = 'Adding...';
-
-                const newStorage = document.getElementById('newStorageInput').value.trim();
-                if (!newStorage) {
-                    alert('Please enter a valid Storage value.');
-                    return;
-                }
-
-                const storageSelect = document.getElementById('itemStorageSelect');
-                if (Array.from(storageSelect.options).some(opt => opt.value === newStorage)) {
-                    alert('Storage value already exists.');
-                    return;
-                }
-
-                // Store in custom storages
-                customStorages.push(newStorage);
-                console.log('Added Storage:', newStorage);
-                console.log('Custom storages:', customStorages);
-
-                // Update dropdown
-                updateStorageOptions();
-                storageSelect.value = newStorage;
-                hideAddStorageForm();
-            } catch (error) {
-                console.error('Error adding new storage:', error);
-                alert('An error occurred while adding the storage. Please try again.');
-            } finally {
-                const addBtn = document.getElementById('addStorageBtn');
-                addBtn.disabled = false;
-                addBtn.textContent = 'Add';
+            function showAddCategoryForm() {
+                document.getElementById('addCategoryForm').style.display = 'block';
             }
-        }
-    </script>
-}
 
-<style>
-    .text-danger {
-        font-size: 0.875em;
-        margin-top: 0.25em;
-    }
+            function hideAddCategoryForm() {
+                document.getElementById('addCategoryForm').style.display = 'none';
+                document.getElementById('newCategoryInput').value = '';
+            }
 
-    .is-invalid {
-        border-color: #dc3545;
-    }
+            function showAddItemTypeForm() {
+                document.getElementById('addItemTypeForm').style.display = 'block';
+            }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+            function hideAddItemTypeForm() {
+                document.getElementById('addItemTypeForm').style.display = 'none';
+                document.getElementById('newItemTypeInput').value = '';
+            }
 
-    .form-control {
-        width: 100%;
+            function showAddStorageForm() {
+                document.getElementById('addStorageForm').style.display = 'block';
+            }
+
+            function hideAddStorageForm() {
+                document.getElementById('addStorageForm').style.display = 'none';
+                document.getElementById('newStorageInput').value = '';
+            }
+
+            // Add New Options
+            function addNewItemName() {
+                try {
+                    const addBtn = document.getElementById('addItemNameBtn');
+                    addBtn.disabled = true;
+                    addBtn.textContent = 'Adding...';
+
+                    const newItemName = document.getElementById('newItemNameInput').value.trim();
+                    const section = document.getElementById('itemSectionSelect').value;
+                    if (!newItemName || !section) {
+                        alert('Please select an Item Section and enter a valid Item Name.');
+                        return;
+                    }
+
+                    const itemNameSelect = document.getElementById('itemNameSelect');
+                    if (Array.from(itemNameSelect.options).some(opt => opt.value === newItemName)) {
+                        alert('Item Name already exists.');
+                        return;
+                    }
+
+                    // Store in custom items
+                    if (!customItems[section]) customItems[section] = [];
+                    customItems[section].push(newItemName);
+                    console.log('Added ItemName:', newItemName, 'to section:', section);
+                    console.log('Custom items:', customItems);
+
+                    // Update dropdown
+                    updateItemNameOptions();
+                    itemNameSelect.value = newItemName;
+                    updateCategoryOptions(); // Update categories for the new item
+                    hideAddItemNameForm();
+                } catch (error) {
+                    console.error('Error adding new item name:', error);
+                    alert('An error occurred while adding the item name. Please try again.');
+                } finally {
+                    const addBtn = document.getElementById('addItemNameBtn');
+                    addBtn.disabled = false;
+                    addBtn.textContent = 'Add';
+                }
+            }
+
+            function addNewCategory() {
+                try {
+                    const addBtn = document.getElementById('addCategoryBtn');
+                    addBtn.disabled = true;
+                    addBtn.textContent = 'Adding...';
+
+                    const newCategory = document.getElementById('newCategoryInput').value.trim();
+                    const itemName = document.getElementById('itemNameSelect').value;
+                    if (!newCategory || !itemName) {
+                        alert('Please select an Item Name and enter a valid Category.');
+                        return;
+                    }
+
+                    const categorySelect = document.getElementById('categorySelect');
+                    if (Array.from(categorySelect.options).some(opt => opt.value === newCategory)) {
+                        alert('Category already exists.');
+                        return;
+                    }
+
+                    // Store in custom categories
+                    if (!customCategories[itemName]) customCategories[itemName] = [];
+                    customCategories[itemName].push(newCategory);
+                    console.log('Added Category:', newCategory, 'for ItemName:', itemName);
+                    console.log('Custom categories:', customCategories);
+
+                    // Update dropdown
+                    updateCategoryOptions();
+                    categorySelect.value = newCategory;
+                    hideAddCategoryForm();
+                } catch (error) {
+                    console.error('Error adding new category:', error);
+                    alert('An error occurred while adding the category. Please try again.');
+                } finally {
+                    const addBtn = document.getElementById('addCategoryBtn');
+                    addBtn.disabled = false;
+                    addBtn.textContent = 'Add';
+                }
+            }
+
+            function addNewItemType() {
+                try {
+                    const addBtn = document.getElementById('addItemTypeBtn');
+                    addBtn.disabled = true;
+                    addBtn.textContent = 'Adding...';
+
+                    const newItemType = document.getElementById('newItemTypeInput').value.trim();
+                    if (!newItemType) {
+                        alert('Please enter a valid Item Type.');
+                        return;
+                    }
+
+                    const itemTypeSelect = document.getElementById('itemTypeSelect');
+                    if (Array.from(itemTypeSelect.options).some(opt => opt.value === newItemType)) {
+                        alert('Item Type already exists.');
+                        return;
+                    }
+
+                    // Store in custom item types
+                    customItemTypes.push(newItemType);
+                    console.log('Added ItemType:', newItemType);
+                    console.log('Custom item types:', customItemTypes);
+
+                    // Update dropdown
+                    updateItemTypeOptions();
+                    itemTypeSelect.value = newItemType;
+                    hideAddItemTypeForm();
+                } catch (error) {
+                    console.error('Error adding new item type:', error);
+                    alert('An error occurred while adding the item type. Please try again.');
+                } finally {
+                    const addBtn = document.getElementById('addItemTypeBtn');
+                    addBtn.disabled = false;
+                    addBtn.textContent = 'Add';
+                }
+            }
+
+            function addNewStorage() {
+                try {
+                    const addBtn = document.getElementById('addStorageBtn');
+                    addBtn.disabled = true;
+                    addBtn.textContent = 'Adding...';
+
+                    const newStorage = document.getElementById('newStorageInput').value.trim();
+                    if (!newStorage) {
+                        alert('Please enter a valid Storage value.');
+                        return;
+                    }
+
+                    const storageSelect = document.getElementById('itemStorageSelect');
+                    if (Array.from(storageSelect.options).some(opt => opt.value === newStorage)) {
+                        alert('Storage value already exists.');
+                        return;
+                    }
+
+                    // Store in custom storages
+                    customStorages.push(newStorage);
+                    console.log('Added Storage:', newStorage);
+                    console.log('Custom storages:', customStorages);
+
+                    // Update dropdown
+                    updateStorageOptions();
+                    storageSelect.value = newStorage;
+                    hideAddStorageForm();
+                } catch (error) {
+                    console.error('Error adding new storage:', error);
+                    alert('An error occurred while adding the storage. Please try again.');
+                } finally {
+                    const addBtn = document.getElementById('addStorageBtn');
+                    addBtn.disabled = false;
+                    addBtn.textContent = 'Add';
+                }
+            }
+        </script>
     }
-</style>
+</body>
+</html>

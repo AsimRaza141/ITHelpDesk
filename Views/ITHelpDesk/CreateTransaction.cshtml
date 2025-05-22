@@ -1,256 +1,295 @@
 ﻿@model ITHelpDesk_Updated.Models.Transaction
-
 @{
     ViewData["Title"] = "Create Transaction";
 }
 
-<div class="container text-center" style="color: navy; padding: 30px;">
-    <h2 style="margin-top: 0;">@ViewData["Title"]</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
 
-    <form asp-action="CreateTransaction" method="post" id="transactionForm">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="row justify-content-center">
-            <div class="col-md-3 form-group">
-                <label for="TransactionCode" style="font-weight: bold;">Transaction Code</label>
-                <input type="text" class="form-control" id="TransactionCode" name="TransactionCode" value="@ViewData["TransactionCode"]" readonly />
+        .container {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            color: navy; /* Navy text color */
+        }
+
+        .row .col-md-3 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-group label {
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+            }
+
+        /* Black border for input boxes */
+        .form-control {
+            border: 1px solid #000000; /* Black border */
+        }
+
+            .form-control:focus {
+                border: 1px solid #000000; /* Black border on focus */
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow on focus */
+            }
+
+        /* Ensure validation error border overrides black border */
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        /* Styling the table with double border */
+        .table {
+            width: 100%;
+            margin-top: 30px;
+            border: 4px double #000000; /* Dark double black border */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Centering the submit button */
+        .btn {
+            background-color: purple;
+            color: white;
+        }
+
+        /* Validation error styling */
+        .text-danger {
+            font-size: 0.875em;
+            margin-top: 0.25em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="margin-top: 0;">@ViewData["Title"]</h2>
+
+        <form asp-action="CreateTransaction" method="post" id="transactionForm">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 form-group">
+                    <label for="TransactionCode">Transaction Code</label>
+                    <input type="text" class="form-control" id="TransactionCode" name="TransactionCode" value="@ViewData["TransactionCode"]" readonly />
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="VendorName">Vendor Name</label>
+                    <select class="form-control" id="VendorName" name="VendorName" required>
+                        <option value="">--Select Vendor--</option>
+                        @foreach (var vendor in ViewData["Vendors"] as List<SelectListItem>)
+                        {
+                            <option value="@vendor.Value">@vendor.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="VendorName" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="ItemCode">Item Code</label>
+                    <select class="form-control" id="ItemCode" name="ItemCode" required onchange="fetchItemDetails()">
+                        <option value="">--Select Item--</option>
+                        @foreach (var item in ViewData["Item"] as List<SelectListItem>)
+                        {
+                            <option value="@item.Value">@item.Value - @item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ItemCode" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="VendorName" style="font-weight: bold;">Vendor Name</label>
-                <select class="form-control" id="VendorName" name="VendorName" required>
-                    <option value="">--Select Vendor--</option>
-                    @foreach (var vendor in ViewData["Vendors"] as List<SelectListItem>)
-                    {
-                        <option value="@vendor.Value">@vendor.Text</option>
-                    }
-                </select>
-                <span asp-validation-for="VendorName" class="text-danger"></span>
+            <div class="row justify-content-center">
+                <div class="col-md-3 form-group">
+                    <label for="ItemType">Item Type</label>
+                    <input type="text" class="form-control" id="ItemType" name="ItemType" readonly />
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="ItemName">Item Name</label>
+                    <input type="text" class="form-control" id="ItemName" name="ItemName" readonly />
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="ItemCategory">Item Category</label>
+                    <input type="text" class="form-control" id="ItemCategory" name="ItemCategory" readonly />
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="ItemStorage">Item Storage</label>
+                    <input type="text" class="form-control" id="ItemStorage" name="ItemStorage" readonly />
+                </div>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="ItemCode" style="font-weight: bold;">Item Code</label>
-                <select class="form-control" id="ItemCode" name="ItemCode" required onchange="fetchItemDetails()">
-                    <option value="">--Select Item--</option>
-                    @foreach (var item in ViewData["Item"] as List<SelectListItem>)
-                    {
-                        <option value="@item.Value">@item.Value - @item.Text</option>
-                    }
-                </select>
-                <span asp-validation-for="ItemCode" class="text-danger"></span>
-            </div>
-        </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 form-group">
+                    <label for="DateOfPurchase">Date of Purchase</label>
+                    <input type="date" class="form-control" id="DateOfPurchase" name="DateOfPurchase" required />
+                    <span asp-validation-for="DateOfPurchase" class="text-danger"></span>
+                </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-3 form-group">
-                <label for="ItemType" style="font-weight: bold;">Item Type</label>
-                <input type="text" class="form-control" id="ItemType" name="ItemType" readonly />
-            </div>
+                <div class="col-md-3 form-group">
+                    <label for="Price">Price</label>
+                    <input type="number" class="form-control" id="Price" name="Price" step="0.01" required />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
 
-            <div class="col-md-3 form-group">
-                <label for="ItemName" style="font-weight: bold;">Item Name</label>
-                <input type="text" class="form-control" id="ItemName" name="ItemName" readonly />
+                <div class="col-md-3 form-group">
+                    <label for="ReceivedQuantity">Received Quantity</label>
+                    <input type="number" class="form-control" id="ReceivedQuantity" name="ReceivedQuantity" required />
+                    <span asp-validation-for="ReceivedQuantity" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="col-md-3 form-group">
-                <label for="ItemCategory" style="font-weight: bold;">Item Category</label>
-                <input type="text" class="form-control" id="ItemCategory" name="ItemCategory" readonly />
+            <div class="text-center">
+                <button type="submit" class="btn">Create Transaction</button>
             </div>
+        </form>
 
-            <div class="col-md-3 form-group">
-                <label for="ItemStorage" style="font-weight: bold;">Item Storage</label>
-                <input type="text" class="form-control" id="ItemStorage" name="ItemStorage" readonly />
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-md-3 form-group">
-                <label for="DateOfPurchase" style="font-weight: bold;">Date of Purchase</label>
-                <input type="date" class="form-control" id="DateOfPurchase" name="DateOfPurchase" required />
-                <span asp-validation-for="DateOfPurchase" class="text-danger"></span>
-            </div>
-
-            <div class="col-md-3 form-group">
-                <label for="Price" style="font-weight: bold;">Price</label>
-                <input type="number" class="form-control" id="Price" name="Price" step="0.01" required />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="col-md-3 form-group">
-                <label for="ReceivedQuantity" style="font-weight: bold;">Received Quantity</label>
-                <input type="number" class="form-control" id="ReceivedQuantity" name="ReceivedQuantity" required />
-                <span asp-validation-for="ReceivedQuantity" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button type="submit" class="btn" style="background-color: purple; color: white;">Create Transaction</button>
-        </div>
-    </form>
-
-    <!-- Display the submitted data in a table -->
-    <h3 class="mt-5" style="color: navy;">Submitted Transactions</h3>
-    <table class="table table-bordered mt-3" style="white-space: nowrap;">
-        <thead>
-            <tr>
-                <th>Transaction Code</th>
-                <th>Vendor Name</th>
-                <th>Item Code</th>
-                <th>Item Type</th>
-                <th>Item Name</th>
-                <th>Item Category</th>
-                <th>Item Storage</th>
-                <th>Date of Purchase</th>
-                <th>Price</th>
-                <th>Received Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var transaction in ViewData["Transactions"] as List<Transaction>)
-            {
+        <!-- Display the submitted data in a table -->
+        <h3 class="mt-5">Submitted Transactions</h3>
+        <table class="table table-bordered mt-3">
+            <thead>
                 <tr>
-                    <td>@transaction.TransactionCode</td>
-                    <td>@transaction.VendorName</td>
-                    <td>@transaction.ItemCode</td>
-                    <td>@transaction.ItemType</td>
-                    <td>@transaction.ItemName</td>
-                    <td>@transaction.ItemCategory</td>
-                    <td>@transaction.ItemStorage</td>
-                    <td>@transaction.DateOfPurchase.ToString("yyyy-MM-dd")</td>
-                    <td>@transaction.Price</td>
-                    <td>@transaction.ReceivedQuantity</td>
+                    <th>Transaction Code</th>
+                    <th>Vendor Name</th>
+                    <th>Item Code</th>
+                    <th>Item Type</th>
+                    <th>Item Name</th>
+                    <th>Item Category</th>
+                    <th>Item Storage</th>
+                    <th>Date of Purchase</th>
+                    <th>Price</th>
+                    <th>Received Quantity</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        function fetchItemDetails() {
-            var itemCode = document.getElementById('ItemCode').value;
-
-            // Clear fields if no itemCode is selected
-            if (!itemCode) {
-                document.getElementById('ItemType').value = '';
-                document.getElementById('ItemName').value = '';
-                document.getElementById('ItemCategory').value = '';
-                document.getElementById('ItemStorage').value = '';
-                return;
-            }
-
-            // Fetch item details from the server
-            fetch('@Url.Action("GetItemDetails", "Transaction")?itemCode=' + encodeURIComponent(itemCode))
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.statusText);
+            </thead>
+            <tbody>
+                @if (ViewData["Transactions"] is List<Transaction> transactions && transactions.Any())
+                {
+                    @foreach (var transaction in transactions)
+                    {
+                        <tr>
+                            <td>@transaction.TransactionCode</td>
+                            <td>@transaction.VendorName</td>
+                            <td>@transaction.ItemCode</td>
+                            <td>@transaction.ItemType</td>
+                            <td>@transaction.ItemName</td>
+                            <td>@transaction.ItemCategory</td>
+                            <td>@transaction.ItemStorage</td>
+                            <td>@transaction.DateOfPurchase.ToString("yyyy-MM-dd")</td>
+                            <td>@transaction.Price</td>
+                            <td>@transaction.ReceivedQuantity</td>
+                        </tr>
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Received item data:", data);
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">No transactions available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-                    // Update fields with received data, use empty string if data is missing
-                    document.getElementById('ItemType').value = data.itemType || '';
-                    document.getElementById('ItemName').value = data.itemName || '';
-                    document.getElementById('ItemCategory').value = data.itemCategory || '';
-                    document.getElementById('ItemStorage').value = data.itemStorage || '';
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- jQuery (Required for Validation) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-                    // Alert if no valid data is returned
-                    if (!data.itemName && !data.itemCategory && !data.itemStorage) {
-                        console.warn('No valid data found for ItemCode:', itemCode);
-                        alert('No data found for the selected ItemCode');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching item details:', error);
-                    alert('Error fetching item details: ' + error.message);
-                    // Clear fields on error
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            function fetchItemDetails() {
+                var itemCode = document.getElementById('ItemCode').value;
+
+                // Clear fields if no itemCode is selected
+                if (!itemCode) {
                     document.getElementById('ItemType').value = '';
                     document.getElementById('ItemName').value = '';
                     document.getElementById('ItemCategory').value = '';
                     document.getElementById('ItemStorage').value = '';
-                });
-        }
-
-        // Enable client-side validation
-        $(document).ready(function () {
-            $("#transactionForm").validate({
-                errorElement: 'span',
-                errorClass: 'text-danger',
-                highlight: function (element) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element) {
-                    $(element).removeClass('is-invalid');
+                    return;
                 }
+
+                // Fetch item details from the server
+                fetch('@Url.Action("GetItemDetails", "Transaction")?itemCode=' + encodeURIComponent(itemCode))
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Received item data:", data);
+
+                        // Update fields with received data, use empty string if data is missing
+                        document.getElementById('ItemType').value = data.itemType || '';
+                        document.getElementById('ItemName').value = data.itemName || '';
+                        document.getElementById('ItemCategory').value = data.itemCategory || '';
+                        document.getElementById('ItemStorage').value = data.itemStorage || '';
+
+                        // Alert if no valid data is returned
+                        if (!data.itemName && !data.itemCategory && !data.itemStorage) {
+                            console.warn('No valid data found for ItemCode:', itemCode);
+                            alert('No data found for the selected ItemCode');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching item details:', error);
+                        alert('Error fetching item details: ' + error.message);
+                        // Clear fields on error
+                        document.getElementById('ItemType').value = '';
+                        document.getElementById('ItemName').value = '';
+                        document.getElementById('ItemCategory').value = '';
+                        document.getElementById('ItemStorage').value = '';
+                    });
+            }
+
+            // Enable client-side validation
+            $(document).ready(function () {
+                $("#transactionForm").validate({
+                    errorElement: 'span',
+                    errorClass: 'text-danger',
+                    highlight: function (element) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        $(element).removeClass('is-invalid');
+                    }
+                });
             });
-        });
-    </script>
-}
-
-<style>
-    /* Aligning the form elements in a single line */
-    .row .col-md-3 {
-        margin-bottom: 20px;
+        </script>
     }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-        .form-group label {
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-        }
-
-    /* Styling the table with nowrap property to prevent text wrapping */
-    table {
-        width: 100%;
-        margin-top: 30px;
-        border-collapse: collapse;
-    }
-
-    table, th, td {
-        border: 1px solid black;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: center;
-        white-space: nowrap; /* Prevent text wrapping in table */
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    /* Centering the container and submit button */
-    .container {
-        text-align: center;
-        padding: 30px;
-        border-radius: 10px;
-        color: navy; /* Navy text color */
-    }
-
-    .btn {
-        background-color: purple;
-        color: white;
-    }
-
-    /* Validation error styling */
-    .text-danger {
-        font-size: 0.875em;
-        margin-top: 0.25em;
-    }
-
-    .is-invalid {
-        border-color: #dc3545;
-    }
-</style>
+</body>
+</html>

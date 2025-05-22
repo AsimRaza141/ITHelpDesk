@@ -93,7 +93,7 @@
                 </div>
                 @{
                     string USR_NAME = Context.Session.GetString("USR_NAME");
-                    var allowedUsers = new List<string> { "4357", "1078", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560" };
+                    var allowedUsers = new List<string> { "4357", "1078", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560", "5110" };
                     if (!string.IsNullOrEmpty(USR_NAME) && allowedUsers.Contains(USR_NAME))
                     {
                         <div class="col-md-4">
@@ -103,7 +103,7 @@
                             <a href="@Url.Action("CreateRiskPoint", "RiskPoints")" class="btn btn-warning btn-lg"><i class="fas fa-exclamation-triangle"></i> Risk Points</a>
                         </div>
                         <div class="col-md-4">
-                            <a href="@Url.Action("AchievementsOverRiskPoints", "RiskPoints")" class="btn btn-warning btn-lg"><i class="fas fa-chart-bar"></i> Achievements / Risk Points</a>
+                            <a href="@Url.Action("AchievementsOverRiskPoints", "RiskPoints")" class="btn btn-warning btn-lg"><i class="fas fa-trophy"></i> Achievements / Risk Points</a>
                         </div>
                         <div class="col-md-4">
                             <a href="@Url.Action("CreateAchievement", "Achievement")" class="btn btn-success btn-lg"><i class="fas fa-trophy"></i> Achievements</a>

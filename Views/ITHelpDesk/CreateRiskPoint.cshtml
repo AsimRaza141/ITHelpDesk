@@ -1,165 +1,129 @@
 ﻿@model ITHelpDesk_Updated.Models.RiskPointViewModel
 @{
-    ViewData["Title"] = "Queries List";
+    ViewData["Title"] = "Create and View Risk Points";
     string currentUser = ViewData["CurrentUser"] as string;
     var allowedUsers = new List<string> { "4357", "1078", "4922", "3961", "4762", "3936", "4654", "4999", "1042", "1830", "1831", "2560" };
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 style="margin-top: 0; text-align: center; color: orangered; font-weight: bold;">Create and View Risk Points</h2>
-
-            <!-- Risk Point Form -->
-            <form asp-action="CreateRiskPoint" method="post">
-                <div class="row form-row" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
-                    <!-- Title -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="Title" style="font-weight: bold;" data-label="Title">Title</label>
-                        <input asp-for="CurrentRiskPoint.Title" class="form-control" />
-                        <span asp-validation-for="CurrentRiskPoint.Title" class="text-danger"></span>
-                    </div>
-
-                    <!-- Category -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="Category" style="font-weight: bold;" data-label="Category">Category</label>
-                        <select asp-for="CurrentRiskPoint.Category" class="form-control">
-                            <option value="Hardware">Hardware</option>
-                            <option value="Software">Software</option>
-                            <option value="Networks">Networks</option>
-                            <option value="Others">Others</option>
-                        </select>
-                        <span asp-validation-for="CurrentRiskPoint.Category" class="text-danger"></span>
-                    </div>
-
-                    <!-- Priority -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="Priority" style="font-weight: bold;" data-label="Priority">Priority</label>
-                        <select asp-for="CurrentRiskPoint.Priority" class="form-control">
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                        <span asp-validation-for="CurrentRiskPoint.Priority" class="text-danger"></span>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="Status" style="font-weight: bold;" data-label="Status">Status</label>
-                        <select asp-for="CurrentRiskPoint.Status" class="form-control">
-                            <option value="New">New</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Resolved">Resolved</option>
-                        </select>
-                        <span asp-validation-for="CurrentRiskPoint.Status" class="text-danger"></span>
-                    </div>
-
-                    <!-- Resolved At -->
-                    <div class="form-group" style="flex: 1; min-width: 150px;">
-                        <label for="ResolvedAt" style="font-weight: bold;" data-label="Resolved At">Resolved At</label>
-                        <input asp-for="CurrentRiskPoint.ResolvedAt" type="date" class="form-control" />
-                        <span asp-validation-for="CurrentRiskPoint.ResolvedAt" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="form-group text-center mt-3">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Submit Risk Point</button>
-                </div>
-            </form>
-
-            <hr />
-
-            <!-- Submitted Risk Points Table -->
-            <h3 class="text-center" style="margin-top: 20px; font-weight: bold; color: orangered;">Submitted Risk Points</h3>
-            <!-- Generate Report Button -->
-            <div class="form-group text-center mt-3">
-                <button id="generateReportBtn" class="btn btn-success" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Generate Report</button>
-            </div>
-
-
-            <div id="responsive-table" style="margin-top: 20px;">
-                <table class="table table-bordered table-striped" id="riskPointsTable" style="width: 100%; text-align: center; border: 1px solid #000;">
-                    <thead style="background-color: #00008B; color: white;">
-                        <tr>
-                            <th data-title="Employee Code">Employee Code</th>
-                            <th data-title="Name">Name</th>
-                            <th data-title="Title">Title</th>
-                            <th data-title="Category">Category</th>
-                            <th data-title="Priority">Priority</th>
-                            <th data-title="Status">Status</th>
-                            <th data-title="Created At">Created At</th>
-                            <th data-title="Resolved At">Resolved At</th>
-                            <th data-title="Actions">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.RiskPoints != null && Model.RiskPoints.Any())
-                        {
-                            @foreach (var riskPoint in Model.RiskPoints)
-                            {
-                                <tr>
-                                    <td data-title="Employee Code">@riskPoint.USR_NAME</td>
-                                    <td data-title="Name">@riskPoint.USR_FULL_NAME</td>
-                                    <td data-title="Title">@riskPoint.Title</td>
-                                    <td data-title="Category">@riskPoint.Category</td>
-                                    <td data-title="Priority">@riskPoint.Priority</td>
-                                    <td data-title="Status">@riskPoint.Status</td>
-                                    <td data-title="Created At">@riskPoint.CreatedAt.ToString("MMMM dd, yyyy hh:mm tt")</td>
-                                    <td data-title="Resolved At">@(riskPoint.ResolvedAt?.ToString("MMMM dd, yyyy hh:mm tt") ?? "")</td>
-                                    <td data-title="Actions">
-                                        <a href="@Url.Action("EditRiskPoint", "RiskPoints", new { id = riskPoint.RiskPointId })" class="btn btn-warning btn-sm">Edit</a>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="9" style="text-align: center; color: gray;">No risk points available.</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- CSS for Responsive Form and Table -->
-<style>
-    .form-row .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-        .form-row .form-group label {
-            margin-bottom: 5px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
 
-        .form-row .form-group input,
-        .form-row .form-group select {
-            width: 100%;
+        .container {
+            padding: 30px;
+            max-width: 1400px;
         }
 
-    @@media (max-width: 768px) {
+        h2, h3 {
+            text-align: center;
+            font-weight: bold;
+            color: orangered;
+        }
+
         .form-row {
-            flex-direction: column;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
             .form-row .form-group {
-                margin-bottom: 15px;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                min-width: 150px;
             }
 
                 .form-row .form-group label {
-                    font-weight: bold;
-                    display: block;
                     margin-bottom: 5px;
+                    font-weight: bold;
                 }
 
-                    .form-row .form-group label:before {
-                        content: attr(data-label);
-                    }
+                .form-row .form-group input,
+                .form-row .form-group select {
+                    width: 100%;
+                    border: 1px solid #000000; /* Black border for inputs */
+                }
+
+                .form-row .form-group .form-control:focus {
+                    border: 1px solid #000000;
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                }
+
+                .form-row .form-group .is-invalid {
+                    border-color: #dc3545 !important;
+                }
+
+                .form-row .form-group .text-danger {
+                    font-size: 0.875em;
+                    margin-top: 0.25em;
+                }
+
+        .table {
+            max-width: 1200px;
+            margin: 20px auto 0;
+            border: 4px double #000000; /* Dark double black border */
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #00008B; /* Dark blue */
+            color: white;
+        }
+
+        /* Edit icon styling */
+        .edit-icon {
+            font-size: 1.2rem;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+            .edit-icon:hover {
+                color: #005cbf;
+            }
+
+        /* Responsive Form and Table */
+        @@media (max-width: 768px) {
+            .form-row
+
+        {
+            flex-direction: column;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-row .form-group label {
+                font-weight: bold;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+                .form-row .form-group label:before {
+                    content: attr(data-label);
+                }
 
         #responsive-table table,
         #responsive-table thead,
@@ -194,33 +158,182 @@
                 content: attr(data-title);
                 font-weight: bold;
             }
-    }
-</style>
 
-@section Scripts {
-    <script>
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 style="margin-top: 0;">Create and View Risk Points</h2>
 
-            
-        $(document).ready(function () {
-            $("#generateReportBtn").click(function () {
-                fetch('@Url.Action("GenerateAllRiskPointsReport", "RiskPoints")', {
-                    method: 'POST'
-                })
-                .then(response => response.blob())  
-                .then(blob => {
-                    
-                    var link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);  
-                    link.download = "AllRiskPointsReport.xlsx";  
-                    link.click();  
-                })
-                .catch(error => {
-                    alert("There was an error generating the report.");
+                <!-- Risk Point Form -->
+                <form asp-action="CreateRiskPoint" method="post" id="riskPointForm">
+                    <div class="row form-row">
+                        <!-- Title -->
+                        <div class="form-group">
+                            <label for="Title" data-label="Title">Title</label>
+                            <input asp-for="CurrentRiskPoint.Title" class="form-control" />
+                            <span asp-validation-for="CurrentRiskPoint.Title" class="text-danger"></span>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="form-group">
+                            <label for="Category" data-label="Category">Category</label>
+                            <select asp-for="CurrentRiskPoint.Category" class="form-control">
+                                <option value="Hardware">Hardware</option>
+                                <option value="Software">Software</option>
+                                <option value="Networks">Networks</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <span asp-validation-for="CurrentRiskPoint.Category" class="text-danger"></span>
+                        </div>
+
+                        <!-- Priority -->
+                        <div class="form-group">
+                            <label for="Priority" data-label="Priority">Priority</label>
+                            <select asp-for="CurrentRiskPoint.Priority" class="form-control">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                            <span asp-validation-for="CurrentRiskPoint.Priority" class="text-danger"></span>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="form-group">
+                            <label for="Status" data-label="Status">Status</label>
+                            <select asp-for="CurrentRiskPoint.Status" class="form-control">
+                                <option value="New">New</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                            <span asp-validation-for="CurrentRiskPoint.Status" class="text-danger"></span>
+                        </div>
+
+                        <!-- Resolved At -->
+                        <div class="form-group">
+                            <label for="ResolvedAt" data-label="Resolved At">Resolved At</label>
+                            <input asp-for="CurrentRiskPoint.ResolvedAt" type="date" class="form-control" />
+                            <span asp-validation-for="CurrentRiskPoint.ResolvedAt" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group text-center mt-3">
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Submit Risk Point</button>
+                    </div>
+                </form>
+
+                <hr />
+
+                <!-- Submitted Risk Points Table -->
+                <h3 style="margin-top: 20px;">Submitted Risk Points</h3>
+                <!-- Generate Report Button -->
+                <div class="form-group text-center mt-3">
+                    <button id="generateReportBtn" class="btn btn-success" style="padding: 10px 20px; font-size: 16px; background-color: orangered;">Generate Report</button>
+                </div>
+
+                <div id="responsive-table">
+                    <table class="table table-bordered table-striped" id="riskPointsTable">
+                        <thead>
+                            <tr>
+                                <th data-title="Employee Code">Employee Code</th>
+                                <th data-title="Name">Name</th>
+                                <th data-title="Title">Title</th>
+                                <th data-title="Category">Category</th>
+                                <th data-title="Priority">Priority</th>
+                                <th data-title="Status">Status</th>
+                                <th data-title="Created At">Created At</th>
+                                <th data-title="Resolved At">Resolved At</th>
+                                <th data-title="Actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RiskPoints != null && Model.RiskPoints.Any())
+                            {
+                                @foreach (var riskPoint in Model.RiskPoints)
+                                {
+                                    <tr>
+                                        <td data-title="Employee Code">@riskPoint.USR_NAME</td>
+                                        <td data-title="Name">@riskPoint.USR_FULL_NAME</td>
+                                        <td data-title="Title">@riskPoint.Title</td>
+                                        <td data-title="Category">@riskPoint.Category</td>
+                                        <td data-title="Priority">@riskPoint.Priority</td>
+                                        <td data-title="Status">@riskPoint.Status</td>
+                                        <td data-title="Created At">
+                                            <div style="display: block;">@riskPoint.CreatedAt.ToString("MMMM dd, yyyy")</div>
+                                            <div style="display: block;">@riskPoint.CreatedAt.ToString("hh:mm tt")</div>
+                                        </td>
+                                        <td data-title="Resolved At">
+                                            @if (riskPoint.ResolvedAt.HasValue)
+                                            {
+                                                <div style="display: block;">@riskPoint.ResolvedAt.Value.ToString("MMMM dd, yyyy")</div>
+                                                <div style="display: block;">@riskPoint.ResolvedAt.Value.ToString("hh:mm tt")</div>
+                                            }
+                                            else
+                                            {
+                                                <span>Not Resolved</span>
+                                            }
+                                        </td>
+                                        <td data-title="Actions">
+                                            <a asp-action="EditRiskPoint" asp-controller="RiskPoints" asp-route-id="@riskPoint.RiskPointId" class="edit-icon"><i class="bi bi-pencil"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" style="text-align: center; color: gray;">No risk points available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            $(document).ready(function () {
+                // Enable client-side validation
+                $("#riskPointForm").validate({
+                    errorElement: 'span',
+                    errorClass: 'text-danger',
+                    highlight: function (element) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        $(element).removeClass('is-invalid');
+                    }
+                });
+
+                // Generate Report
+                $("#generateReportBtn").click(function () {
+                    fetch('@Url.Action("GenerateAllRiskPointsReport", "RiskPoints")', {
+                        method: 'POST'
+                    })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "AllRiskPointsReport.xlsx";
+                        link.click();
+                    })
+                    .catch(error => {
+                        alert("There was an error generating the report.");
+                    });
                 });
             });
-        });
-  
-    </script>
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-
-}
+        </script>
+    }
+</body>
+</html>

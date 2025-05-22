@@ -3,12 +3,32 @@
   "WorkspaceRootPath": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createstockreport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createstockreport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createriskpoint.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createriskpoint.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createquery.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createquery.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\querieslist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\querieslist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\views\\ithelpdesk\\createvendor.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:views\\ithelpdesk\\createvendor.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\controllers\\vendorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:controllers\\vendorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|d:\\ithelpdesk-updated\\ithelpdesk-updated\\models\\vendorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{009E8D2F-685E-46B7-ADA3-2BA35C06C6DC}|ITHelpDesk-Updated.csproj|solutionrelative:models\\vendorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,28 +47,87 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\Login.cshtml",
-              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\Login.cshtml",
-              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\Login.cshtml",
-              "RelativeToolTip": "Views\\ITHelpDesk\\Login.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAnAAAAAAAAAA==",
+              "Title": "CreateItem.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateItem.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateItem.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateItem.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\CreateItem.cshtml",
+              "ViewState": "AgIAAP8AAAAAAAAAAADwvxABAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-16T06:03:15.445Z",
+              "WhenOpened": "2025-05-22T10:29:21.045Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CreateStockReport.cshtml",
-              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateStockReport.cshtml",
-              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateStockReport.cshtml",
-              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateStockReport.cshtml",
-              "RelativeToolTip": "Views\\ITHelpDesk\\CreateStockReport.cshtml",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAACcAAABRAAAAAAAAAA==",
+              "Title": "CreateRiskPoint.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateRiskPoint.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateRiskPoint.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateRiskPoint.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\CreateRiskPoint.cshtml",
+              "ViewState": "AgIAAFoAAAAAAAAAAADwv2oAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-16T05:41:19.705Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-22T10:26:00.516Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CreateQuery.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateQuery.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateQuery.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateQuery.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\CreateQuery.cshtml",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAG8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-22T10:19:30.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "QueriesList.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\QueriesList.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\QueriesList.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\QueriesList.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\QueriesList.cshtml",
+              "ViewState": "AgIAAI0AAAAAAAAAAADwv58AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-22T10:15:27.739Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "VendorViewModel.cs",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Models\\VendorViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\VendorViewModel.cs",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Models\\VendorViewModel.cs",
+              "RelativeToolTip": "Models\\VendorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T10:12:03.957Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VendorController.cs",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Controllers\\VendorController.cs",
+              "RelativeDocumentMoniker": "Controllers\\VendorController.cs",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Controllers\\VendorController.cs",
+              "RelativeToolTip": "Controllers\\VendorController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T10:11:55.178Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CreateVendor.cshtml",
+              "DocumentMoniker": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateVendor.cshtml",
+              "RelativeDocumentMoniker": "Views\\ITHelpDesk\\CreateVendor.cshtml",
+              "ToolTip": "D:\\ITHelpDesk-Updated\\ITHelpDesk-Updated\\Views\\ITHelpDesk\\CreateVendor.cshtml",
+              "RelativeToolTip": "Views\\ITHelpDesk\\CreateVendor.cshtml",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAjwL0AAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-22T10:00:10.346Z"
             }
           ]
         }
